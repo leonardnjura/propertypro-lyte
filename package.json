@@ -1,0 +1,34 @@
+{
+  "name": "propertypro-lyte",
+  "version": "1.0.0",
+  "description": "A platform built where people can create and/or serach properties for sale or rent",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardnjura/propertypro-lyte.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leonardnjura/propertypro-lyte/issues"
+  },
+  "homepage": "https://github.com/leonardnjura/propertypro-lyte#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.2.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "pg": "^7.11.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
