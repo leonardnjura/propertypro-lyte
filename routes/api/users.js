@@ -1,6 +1,9 @@
+const config = require('config');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const auth = require('../../middleware/auth');
 
 // User Model
 const User = require('../../models/User');
@@ -9,7 +12,7 @@ const User = require('../../models/User');
 // @desc    Fetch all users
 // @access  Public
 router.get('/', (req, res) => {
-  User.findAll()
+  User.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
     .then(users => res.status(200).json(users))
     .catch(err => console.log(err));
 });
@@ -27,7 +30,7 @@ router.get('/:id', (req, res) => {
 });
 
 // @route   POST api/users
-// @desc    Add a user
+// @desc    Register a user
 // @access  Public
 router.post('/', (req, res) => {
   const { firstname, lastname, email, password } = req.body;
@@ -54,26 +57,28 @@ router.post('/', (req, res) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
         if (err) throw err;
         newUser.password = hash;
-        newUser
-          .save()
-          .then(user =>
-            res.status(201).json({
-              user: {
-                // avoid pswd / annoying yada yada display
-                id: user.id,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                email: user.email,
-                password: user.password,
-                createdAt: user.createdAt
-              },
-              success: true
-            })
+        newUser.save().then(user =>
+          jwt.sign(
+            { id: user.id, email: user.email },
+            config.get('JWT_SECRET'),
+            { expiresIn: 3600 * 7 },
+            (err, token) => {
+              if (err) throw err;
+              res.status(201).json({
+                token,
+                user: {
+                  // avoid pswd / annoying yada yada display
+                  id: user.id,
+                  firstname: user.firstname,
+                  lastname: user.lastname,
+                  email: user.email,
+                  password: user.password,
+                  createdAt: user.createdAt
+                }
+              });
+            }
           )
-          .catch(err => {
-            res.status(400).json({ success: false });
-            throw err;
-          });
+        );
       });
     });
   });
@@ -81,8 +86,8 @@ router.post('/', (req, res) => {
 
 // @route   PUT api/users/:id
 // @desc    Update a user
-// @access  Public
-router.put('/:id', (req, res) => {
+// @access  Protected
+router.put('/:id', auth, (req, res) => {
   const { firstname, lastname } = req.body;
   // required fields?
   if (!firstname || !lastname) {
@@ -114,8 +119,8 @@ router.put('/:id', (req, res) => {
 
 // @route   DELETE api/users/:id
 // @desc    Delete a user
-// @access  Public
-router.delete('/:id', (req, res) => {
+// @access  Protected
+router.delete('/:id', auth, (req, res) => {
   User.findByPk(req.params.id)
     .then(user => user.destroy().then(() => res.json({ success: true })))
     .catch(err => {
