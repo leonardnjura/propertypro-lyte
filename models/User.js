@@ -19,8 +19,8 @@ const User = db.define('user', {
     required: true
   },
   createdAt: {
-      type: Sequelize.DATE,
-      default: Date.now
+    type: Sequelize.DATE,
+    default: Date.now
   }
 });
 
