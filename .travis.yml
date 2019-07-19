@@ -1,0 +1,23 @@
+language: node_js
+node_js:
+  # - '10.16.0'
+  - 'stable'
+cache:
+  directories:
+    - 'node_modules'
+
+services:
+  - postgresql
+
+env:
+  - NODE_ENV=test 
+
+before_script:
+  - psql -c 'create database propertypro_lyte_test;' -U postgres
+  # - npm install -g gulp-cli
+  - sequelize db:migrate
+  - sequelize db:seed:all
+script: 
+  - npm run lint
+  - npm run test
+after_success: npm run coverage

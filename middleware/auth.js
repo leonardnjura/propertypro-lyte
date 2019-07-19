@@ -6,7 +6,7 @@ function auth(req, res, next) {
 
   // check for token
   // ensure to return from function to avoid resending headers
-  if (!token) return res.status(401).json({ msg: 'No token provided' }); 
+  if (!token) return res.status(401).json({ msg: 'No token provided' });
 
   try {
     // verify token

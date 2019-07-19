@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const config = require('config');
@@ -6,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth');
 
 // User Model
-const User = require('../../models/User');
+const { User } = require('../../models/index');
 
 // @route   POST api/auth
 // @desc    Authenticate user
@@ -25,7 +26,8 @@ router.post('/', (req, res) => {
 
     // validate password
     bcrypt.compare(password, user.password).then(isMatch => {
-      if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
+      if (!isMatch)
+        return res.status(400).json({ msg: '!Invalid credentials' });
       jwt.sign(
         { id: user.id, email: user.email },
         config.get('JWT_SECRET'),
@@ -37,8 +39,8 @@ router.post('/', (req, res) => {
             user: {
               // avoid pswd / annoying yada yada display
               id: user.id,
-              firstname: user.firstname,
-              lastname: user.lastname,
+              firstName: user.firstName,
+              lastName: user.lastName,
               email: user.email,
               password: user.password,
               createdAt: user.createdAt
@@ -53,14 +55,18 @@ router.post('/', (req, res) => {
 // @route   GET api/auth/user
 // @desc    Determine user
 // @access  Protected
-// Avoid findByPk() when you want to pass in more attributes 
+// Avoid findByPk() when you want to pass in more attributes
 router.get('/user', auth, (req, res) => {
-  User.findOne({ where: { id: req.user.id}, attributes: { exclude: ['password'] } })
-    .then(user => res.json(user));
+  User.findOne({
+    where: { id: req.user.id },
+    attributes: { exclude: ['password'] }
+  }).then(user => res.json(user));
 });
 router.get('/whoami', auth, (req, res) => {
-  User.findOne({ where: { id: req.user.id}, attributes: { exclude: ['password'] } })
-    .then(user => res.json(user));
+  User.findOne({
+    where: { id: req.user.id },
+    attributes: { exclude: ['password'] }
+  }).then(user => res.json(user));
 });
 
 module.exports = router;
