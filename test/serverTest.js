@@ -19,19 +19,37 @@ describe('serverTests', () => {
   let oneUserId = '';
   let twoUserToken = '';
   let twoUserId = '';
+  let superUserToken = '';
   const oneUserData = { email: 'esther@localhost.com', password: '0000' };
   const twoUserData = { email: 'valencia@localhost.com', password: '0000' };
+  const superUserData = { email: 'obama@localhost.com', password: '4300' };
   const twoUserInvalidCredentials = {
     email: 'valencia@localhost.com',
     password: 'B00B'
   };
+  const twoUserEmailTypo = {
+    email: 'valen@localhost.com',
+    password: 'B00B'
+  };
   const twoUserIncompleteData = { email: 'valencia@localhost.com' };
-  const twoUserEditData = { firstName: 'Valencia', lastName: 'X' };
+  const twoUserEditData = { firstName: 'Valencia', lastName: 'Yessir' };
   const twoUserBadEditData = { email: 'b@tmanandrobin.com', id: 6 };
+  const twoUserPromoteData = { isAdmin: true };
   const missingUser = 999;
 
   before(done => {
     console.log('\n**BEFORE');
+    // login one of omni present supers
+    request(app)
+      .post('/api/auth')
+      .send(superUserData)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        console.log('LOGIN SUPERUSER', res.body);
+        superUserToken = res.body.token;
+      });
     done();
   });
 
@@ -47,6 +65,7 @@ describe('serverTests', () => {
   beforeEach(done => {
     console.log('\n*BEFORE EACH, CREATE DUMMY USER');
     // runs before each test in this block
+    // create regular user
     request(app)
       .post('/api/users')
       .send(oneUserData)
@@ -192,8 +211,8 @@ describe('serverTests', () => {
             return done(err);
           }
           // console.log(res.body);
-          assert.include(res.body.msg, 'Please enter required fields');
-          assert.equal(res.status, 400);
+          assert.include(res.body.errors[0].msg, 'required');
+          assert.equal(res.status, 422);
           return done();
         });
     });
@@ -242,6 +261,21 @@ describe('serverTests', () => {
         });
     });
 
+    it('POST shall catch if a login user is missing in the system', done => {
+      request(app)
+        .post('/api/auth')
+        .send(twoUserEmailTypo)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log('LOGIN DECLINED, EMAIL TYPO', res.body);
+          assert.property(res.body, 'msg');
+          assert.include(res.body.msg, 'User does not exist');
+          return done();
+        });
+    });
+
     it('WHOAMI should determine current user', done => {
       request(app)
         .get('/api/auth/user')
@@ -252,11 +286,12 @@ describe('serverTests', () => {
           }
           console.log('WHOAMI', res.body);
           assert.typeOf(res.body, 'object');
-          assert.typeOf(res.body.email, 'string');
-          assert.property(res.body, 'id');
-          assert.property(res.body, 'firstName');
-          assert.property(res.body, 'lastName');
-          assert.property(res.body, 'avatarUrl');
+          assert.typeOf(res.body.user.email, 'string');
+          assert.typeOf(res.body.user.isAdmin, 'boolean');
+          assert.property(res.body.user, 'id');
+          assert.property(res.body.user, 'firstName');
+          assert.property(res.body.user, 'lastName');
+          assert.property(res.body.user, 'avatarUrl');
           assert.equal(res.status, 200);
           return done();
         });
@@ -270,7 +305,7 @@ describe('serverTests', () => {
           if (err) {
             return done(err);
           }
-          console.log('WHOAMI REDUNDANT', res.body);
+          // console.log('WHOAMI REDUNDANT', res.body);
           assert.typeOf(res.body, 'object');
           assert.typeOf(res.body.email, 'string');
           assert.property(res.body, 'id');
@@ -316,6 +351,71 @@ describe('serverTests', () => {
         });
     });
 
+    it('PUT should promote user', done => {
+      request(app)
+        .put(`/api/users/promote/${twoUserId}`)
+        .set('x-auth-token', superUserToken)
+        .send(twoUserPromoteData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log('VALENCIA PROMOTED', res.body);
+          assert.property(res.body, 'success');
+          assert.property(res.body.user, 'updatedAt');
+          assert.equal(res.status, 200);
+          return done();
+        });
+    });
+
+    it('PUT shall not promote user with missing token', done => {
+      request(app)
+        .put(`/api/users/promote/${twoUserId}`)
+        // .set('x-auth-token', 'fooXorXexpiredXsuperXUserXToken')
+        .send(twoUserPromoteData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.include(res.body.msg, 'No token provided');
+          assert.equal(res.status, 401);
+          return done();
+        });
+    });
+
+    it('PUT shall not promote user with invalid token', done => {
+      request(app)
+        .put(`/api/users/promote/${twoUserId}`)
+        .set('x-auth-token', 'fooXorXexpiredXsuperXUserXToken')
+        .send(twoUserPromoteData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.include(res.body.msg, 'Invalid token');
+          assert.equal(res.status, 400);
+          return done();
+        });
+    });
+
+    it('PUT shall not promote user without admin token', done => {
+      request(app)
+        .put(`/api/users/promote/${twoUserId}`)
+        .set('x-auth-token', oneUserToken)
+        .send(twoUserPromoteData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.include(res.body.msg, 'Admin only');
+          assert.equal(res.status, 401);
+          return done();
+        });
+    });
+
     it('PUT shall not edit user email or id', done => {
       request(app)
         .put(`/api/users/${twoUserId}`)
@@ -326,9 +426,9 @@ describe('serverTests', () => {
             return done(err);
           }
           // console.log(res.body)
-          assert.property(res.body, 'msg');
-          assert.include(res.body.msg, 'Please update name fields');
-          assert.equal(res.status, 400);
+          assert.property(res.body, 'errors');
+          assert.include(res.body.errors[0].msg, 'required');
+          assert.equal(res.status, 422);
           return done();
         });
     });
@@ -346,6 +446,22 @@ describe('serverTests', () => {
           assert.typeOf(res.body.success, 'boolean');
           assert.equal(res.body.success, false);
           assert.equal(res.status, 404);
+          return done();
+        });
+    });
+
+    it('PUT should edit user with valid token', done => {
+      request(app)
+        .put(`/api/users/${twoUserId}`)
+        .set('x-auth-token', 'fooXorXexpiredXsuperXUserXToken')
+        .send(twoUserEditData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.include(res.body.msg, 'Invalid token');
+          assert.equal(res.status, 400);
           return done();
         });
     });

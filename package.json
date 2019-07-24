@@ -9,6 +9,7 @@
     "mocha": "mocha || true",
     "test": "nyc --reporter=html --reporter=text mocha --timeout=3000 || true",
     "lint": "eslint ./ || true",
+    "prettier": "prettier --print-width 80 --single-quote  es6 --write ./**/*.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -30,6 +31,8 @@
     "eslint-config-airbnb": "^17.1.1",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
+    "express-validator": "^6.1.1",
+    "faker": "^4.1.0",
     "gulp": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.11.0",
@@ -69,9 +72,6 @@
   "lint-staged": {
     "*.{js,jsx}": [
       "eslint"
-    ],
-    "*.{js,jsx,json,md}": [
-      "prettier --list-different"
     ]
   }
 }

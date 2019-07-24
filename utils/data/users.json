@@ -2,37 +2,61 @@
   "users": [
     {
       "email": "jtest@localhost.com",
-      "password": "0000",
+      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
       "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
       "firstName": "Johnny",
       "lastName": "Test",
+      "isAdmin": false,
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z"
     },
     {
       "email": "theo@localhost.com",
-      "password": "0400",
+      "password": "$2a$10$VPbced3q5.g7A2Qhhmdw5uA7xxkpw9PFZa3SZRT6XYmVhr3cBHd3u",
       "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
       "firstName": "Theodore",
       "lastName": "Owen",
+      "isAdmin": false,
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z"
     },
     {
       "email": "pendo@localhost.com",
-      "password": "1000",
+      "password": "$2a$10$x7E3Ax61PKvRKbPxwYu1p.cbZcmoicxu/yN.96WzroGafK2s0Pbim",
       "avatarUrl": "https://semantic-ui.com/images/avatar2/large/kristy.png",
       "firstName": "Pendo",
       "lastName": "Elizabeth",
+      "isAdmin": false,
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z"
     },
     {
+      "email": "leo@localhost.com",
+      "password": "$2a$10$K.pWKKkLFhkSdThWQ4.rSehgDubEul/Wrt0JBmnppJqllqCxlJGd2",
+      "avatarUrl": "https://semantic-ui.com/images/avatar2/large/elyse.png",
+      "firstName": "Leo",
+      "lastName": null,
+      "isAdmin": true,
+      "createdAt": "2019-06-18T11:19:30.686Z",
+      "updatedAt": "2019-06-18T11:19:30.686Z"
+    },
+    {
       "email": "alita@localhost.com",
-      "password": "1300",
+      "password": "$2a$10$.zmei0XaIIkEQuICKbpVQOsWfahOsDZGB2imaSzmUD2bPfpNEG.Uq",
       "avatarUrl": "https://semantic-ui.com/images/avatar2/small/lena.png",
       "firstName": "Alita",
-      "lastName": "Angel",
+      "lastName": "",
+      "isAdmin": false,
+      "createdAt": "2019-07-18T11:19:30.686Z",
+      "updatedAt": "2019-07-18T11:19:30.686Z"
+    },
+    {
+      "email": "obama@localhost.com",
+      "password": "$2a$10$qppx6ze2PoDTTv/UKT2eEu/uZuOKeFIGe51H3VBeSq0AxyUSnLZ46",
+      "avatarUrl": "https://semantic-ui.com/images/avatar2/large/matthew.png",
+      "firstName": null,
+      "lastName": null,
+      "isAdmin": true,
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z"
     }

@@ -18,7 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
-      avatarUrl: DataTypes.STRING
+      avatarUrl: DataTypes.STRING,
+      isAdmin: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      }
     },
     {}
   );

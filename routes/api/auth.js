@@ -2,11 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const config = require('config');
-const jwt = require('jsonwebtoken');
-const auth = require('../../middleware/auth');
 
-// User Model
+const { auth, generateToken } = require('../../middleware/auth');
 const { User } = require('../../models/index');
 
 // @route   POST api/auth
@@ -28,26 +25,8 @@ router.post('/', (req, res) => {
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch)
         return res.status(400).json({ msg: '!Invalid credentials' });
-      jwt.sign(
-        { id: user.id, email: user.email },
-        config.get('JWT_SECRET'),
-        { expiresIn: 3600 * 7 },
-        (err, token) => {
-          if (err) throw err;
-          res.status(201).json({
-            token,
-            user: {
-              // avoid pswd / annoying yada yada display
-              id: user.id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              password: user.password,
-              createdAt: user.createdAt
-            }
-          });
-        }
-      );
+      const token = generateToken(user);
+      res.json({ token, user });
     });
   });
 });
@@ -60,7 +39,7 @@ router.get('/user', auth, (req, res) => {
   User.findOne({
     where: { id: req.user.id },
     attributes: { exclude: ['password'] }
-  }).then(user => res.json(user));
+  }).then(user => res.json({ user }));
 });
 router.get('/whoami', auth, (req, res) => {
   User.findOne({
