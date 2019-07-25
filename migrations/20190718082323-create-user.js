@@ -18,6 +18,11 @@ module.exports = {
       firstName: Sequelize.STRING,
       lastName: Sequelize.STRING,
       avatarUrl: Sequelize.STRING,
+      isAdmin: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
