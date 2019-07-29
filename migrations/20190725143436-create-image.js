@@ -6,11 +6,11 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true
       },
-      userId: {
+      propertyId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',
+          model: 'Properties',
           key: 'id'
         }
       },
