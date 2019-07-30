@@ -1,14 +1,25 @@
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 
+const Sequelize = require('sequelize');
 const { generateToken } = require('../middleware/auth');
 const { User } = require('../models/index');
+
+const { Op } = Sequelize;
 
 /**
  * REST */
 exports.fetchAllUsers = (req, res) => {
   User.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
-    .then(users => res.status(200).json(users))
+    .then(users => res.status(200).json({ users }))
+    .catch(err => console.log(err));
+};
+
+exports.searchAllUsers = (req, res) => {
+  let { term } = req.query;
+  term = term.toLowerCase();
+  User.findAll({ where: { email: { [Op.like]: `%${term}%` } } })
+    .then(results => res.json({ results }))
     .catch(err => console.log(err));
 };
 
@@ -62,11 +73,6 @@ exports.addUser = (req, res) => {
 };
 
 exports.loginUser = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
-  }
   const { email, password } = req.body;
   // custom validation, :)
   if (!email || !password) {

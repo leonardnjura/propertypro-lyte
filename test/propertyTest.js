@@ -17,6 +17,8 @@ console.log('PORT:', env.PORT);
 describe('serverTests', () => {
   let oneRegularUserToken = '';
   let twoRegularUserToken = '';
+  let threeRegularUserToken = '';
+  let threeRegularUserId = '';
   let oneSuperUserToken = '';
   let onePropertyId = '';
   let twoPropertyId = '';
@@ -56,13 +58,14 @@ describe('serverTests', () => {
     email: 'pendo@localhost.com',
     password: '1000'
   };
+  const threeRegularUserLogin = {
+    email: 'johnnytest@localhost.com',
+    password: '0000'
+  };
 
   const missingProperty = 999;
   const badInt = 'e999000000000';
-  const nonExistentUserToken =
-    `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTQ0LCJlbWFpbCI6ImZv` +
-    `b0Bsb2NhbGhvc3QuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDQ4ODAwOSwiZXh` +
-    `wIjoxNTY0NTEzMjA5fQ.-80wtlG4lGlvQsNYS2f9HT3-iWhCxBvjukPWdzLMcmU`;
+  let johnnytestCreated = false;
 
   before(done => {
     console.log('\n**BEFORE');
@@ -103,6 +106,37 @@ describe('serverTests', () => {
         twoRegularUserToken = res.body.token;
       });
 
+    /**
+     * JOHNNYTEST, THE RISE OF
+     * create fly dummy user johnnytest for a valid token then later
+     * delete him and test if non-existent user ca complete listing a
+     * property with a 'valid' token
+     */
+    request(app)
+      .post('/api/auth/signup')
+      .send(threeRegularUserLogin)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        console.log('CREATE JOHNNYTEST HOOK', res.body);
+        threeRegularUserId = res.body.user.id;
+        threeRegularUserToken = res.body.token;
+        johnnytestCreated = true;
+      });
+
+    /**
+     * JOHNNYTEST, THE FALL OF
+     * delete johnnytest already?
+     * no wait till created, see this console hint
+     */
+    console.log('JOHNNYTEST READY', johnnytestCreated);
+
+    done();
+  });
+
+  beforeEach(done => {
+    // console.log('JOHNNYTEST USER READY', johnnytestCreated);
     done();
   });
 
@@ -128,12 +162,33 @@ describe('serverTests', () => {
           }
           console.log(res.body);
           assert.equal(res.status, 200);
-          assert.typeOf(res.body[0], 'object');
-          assert.property(res.body[0], 'id');
-          assert.property(res.body[0], 'owner');
-          assert.property(res.body[0], 'status');
-          assert.property(res.body[0], 'price');
-          assert.property(res.body[0], 'imageUrl');
+          assert.typeOf(res.body.properties[0], 'object');
+          assert.property(res.body.properties[0], 'id');
+          assert.property(res.body.properties[0], 'owner');
+          assert.property(res.body.properties[0], 'status');
+          assert.property(res.body.properties[0], 'price');
+          assert.property(res.body.properties[0], 'imageUrl');
+          return done();
+        });
+    });
+
+    it('GET should search all properties', done => {
+      request(app)
+        .get('/api/properties/search?term=manyatta')
+        .expect('Content-type', /json/)
+        .expect(200) // http status
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 200);
+          assert.typeOf(res.body.results[0], 'object');
+          assert.property(res.body.results[0], 'id');
+          assert.property(res.body.results[0], 'owner');
+          assert.property(res.body.results[0], 'status');
+          assert.property(res.body.results[0], 'price');
+          assert.property(res.body.results[0], 'imageUrl');
           return done();
         });
     });
@@ -247,22 +302,47 @@ describe('serverTests', () => {
     });
 
     it('POST non-existent user shall not register a property', done => {
-      request(app)
-        .post('/api/properties')
-        .set('x-auth-token', nonExistentUserToken)
-        .send(twoPropertyData)
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          console.log('NON EXISTENT USER', res.body);
-          assert.include(
-            res.body.msg,
-            'Cannot create property with nonexistent user'
-          );
-          assert.equal(res.status, 400);
-          return done();
-        });
+      /**
+       * PREOPS: delay successful expunge for user to be created in
+       * before hook, If created user is used only here you may
+       * signup johnnytest user this sequence */
+      setTimeout(() => {
+        request(app)
+          .delete(`/api/auth/users/${threeRegularUserId}`)
+          .set('x-auth-token', oneSuperUserToken)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            console.log('DELETE MISSY', res.body);
+            assert.include(
+              res.body.msg,
+              `Admin deleted account with ID: ${threeRegularUserId}`
+            );
+            assert.equal(res.status, 200);
+            // return done();
+          });
+      }, 2000);
+      /**
+       * OPS: token of expunged user invalidated below */
+      setTimeout(() => {
+        request(app)
+          .post('/api/properties')
+          .set('x-auth-token', threeRegularUserToken)
+          .send(twoPropertyData)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            console.log('NON EXISTENT USER', res.body);
+            assert.include(
+              res.body.msg,
+              'Cannot create property with nonexistent user'
+            );
+            assert.equal(res.status, 400);
+          });
+      }, 2500);
+      return done();
     });
 
     it('POST shall not register property without required fields', done => {
@@ -497,6 +577,21 @@ describe('serverTests', () => {
             `Admin deleted property with ID: ${twoPropertyId}`
           );
           assert.equal(res.status, 200);
+          return done();
+        });
+    });
+
+    it('DELETE shall not expunge a missing property', done => {
+      request(app)
+        .delete(`/api/properties/${missingProperty}`)
+        .set('x-auth-token', oneSuperUserToken)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          // console.log(res.body);
+          assert.include(res.body.msg, 'Property not found');
+          assert.equal(res.status, 404);
           return done();
         });
     });

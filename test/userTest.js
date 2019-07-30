@@ -135,11 +135,31 @@ describe('serverTests', () => {
           }
           console.log(res.body);
           assert.equal(res.status, 200);
-          assert.typeOf(res.body[0], 'object');
-          assert.property(res.body[0], 'id');
-          assert.property(res.body[0], 'firstName');
-          assert.property(res.body[0], 'lastName');
-          assert.property(res.body[0], 'avatarUrl');
+          assert.typeOf(res.body.users[0], 'object');
+          assert.property(res.body.users[0], 'id');
+          assert.property(res.body.users[0], 'firstName');
+          assert.property(res.body.users[0], 'lastName');
+          assert.property(res.body.users[0], 'avatarUrl');
+          return done();
+        });
+    });
+
+    it('GET should search all users', done => {
+      request(app)
+        .get('/api/auth/users/search?term=jtest')
+        .expect('Content-type', /json/)
+        .expect(200) // http status
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 200);
+          assert.typeOf(res.body.results[0], 'object');
+          assert.property(res.body.results[0], 'id');
+          assert.property(res.body.results[0], 'firstName');
+          assert.property(res.body.results[0], 'lastName');
+          assert.property(res.body.results[0], 'avatarUrl');
           return done();
         });
     });
