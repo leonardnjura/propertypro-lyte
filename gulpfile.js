@@ -52,5 +52,5 @@ gulp.task('dbseed', cb => {
 
 gulp.task('hello', () => console.log('Hello gulp'));
 
-gulp.task('inittest', gulp.series(['dbusers', 'dbmigrate', 'dbseed']));
+gulp.task('initdb', gulp.series(['dbusers', 'dbmigrate', 'dbseed']));
 gulp.task('default', gulp.parallel(['nodestart', 'nodetest']));

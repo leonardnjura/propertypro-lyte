@@ -4,7 +4,8 @@ const { check, validationResult } = require('express-validator');
 const { generateToken } = require('../middleware/auth');
 const { User } = require('../models/index');
 
-// REST
+/**
+ * REST */
 exports.fetchAllUsers = (req, res) => {
   User.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
     .then(users => res.status(200).json(users))
@@ -12,7 +13,8 @@ exports.fetchAllUsers = (req, res) => {
 };
 
 exports.fetchOneUser = (req, res) => {
-  User.findOne({ where: { id: req.params.id } })
+  const id = parseInt(req.params.id, 10);
+  User.findOne({ where: { id } })
     .then(user => {
       if (!user) {
         // user object is always there but object may be null
@@ -23,7 +25,7 @@ exports.fetchOneUser = (req, res) => {
     .catch(err => res.status(400).json({ success: false, error: err }));
 };
 
-exports.createUser = (req, res) => {
+exports.addUser = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(422).json({ errors: errors.array() });
@@ -59,7 +61,37 @@ exports.createUser = (req, res) => {
     .catch(err => res.status(400).json({ success: false, error: err }));
 };
 
+exports.loginUser = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(422).json({ errors: errors.array() });
+    return;
+  }
+  const { email, password } = req.body;
+  // custom validation, :)
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ msg: '!Please login with email and password' });
+  }
+  User.findOne({ where: { email } })
+    .then(user => {
+      // existing user?
+      if (!user) return res.status(400).json({ msg: '!User does not exist' });
+
+      // validate password..
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (!isMatch)
+          return res.status(400).json({ msg: '!Invalid credentials' });
+        const token = generateToken(user);
+        res.json({ token, user });
+      });
+    })
+    .catch(err => res.status(400).json({ success: false, error: err }));
+};
+
 exports.updateUser = (req, res) => {
+  const id = parseInt(req.params.id, 10);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(422).json({ errors: errors.array() });
@@ -68,30 +100,47 @@ exports.updateUser = (req, res) => {
 
   const { firstName, lastName } = req.body;
 
-  User.findOne({ where: { id: req.params.id } })
+  User.findOne({ where: { id } })
     .then(user => {
       if (!user) {
         return res.status(404).json({ success: false, msg: '!User not found' });
       }
-      return user.update({ firstName, lastName }).then(() =>
-        res.json({
-          user: {
-            // avoid pswd / annoying yada yada display
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            updatedAt: user.updatedAt
-          },
-          success: true
-        })
-      );
+
+      /**
+       * update already? no wait..
+       * only account owner (or admin) to finish this */
+      const surfer = req.user.id;
+      let userMsg = '!Oops, you are not the account owner';
+
+      if (surfer === id) {
+        userMsg = '!Account owner updated profile';
+        // owner can save
+        return user
+          .update({ firstName, lastName })
+          .then(() => res.json({ user, success: true, msg: userMsg, surfer }));
+      }
+      User.findOne({ where: { id: surfer, isAdmin: true } }).then(admin => {
+        if (admin) {
+          User.findOne({ where: { id } }).then(user => {
+            userMsg = '!Admin updated profile';
+            // admin may save
+            return user
+              .update({ firstName, lastName })
+              .then(() =>
+                res.json({ user, success: true, msg: userMsg, surfer })
+              );
+          });
+        } else {
+          // decline otherwise, nobody else should save
+          return res.status(401).json({ msg: userMsg, surfer });
+        }
+      });
     })
     .catch(err => res.status(400).json({ success: false, error: err }));
 };
 
 exports.promoteUser = (req, res) => {
+  const id = parseInt(req.params.id, 10);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(422).json({ errors: errors.array() });
@@ -100,7 +149,7 @@ exports.promoteUser = (req, res) => {
 
   const { isAdmin } = req.body;
 
-  User.findOne({ where: { id: req.params.id } })
+  User.findOne({ where: { id } })
     .then(user => {
       if (!user) {
         return res.status(404).json({ success: false, msg: '!User not found' });
@@ -123,20 +172,49 @@ exports.promoteUser = (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
-  User.findOne({ where: { id: req.params.id } })
+  const id = parseInt(req.params.id, 10);
+  User.findOne({ where: { id } })
     .then(user => {
       if (!user) {
         return res.status(404).json({ success: false, msg: '!User not found' });
       }
-      return user.destroy().then(() => res.json({ success: true }));
+
+      /**
+       * delete already? no wait..
+       * only account owner (or admin) to finish this */
+      const surfer = req.user.id;
+      let userMsg = '!Oops, you are not the account owner';
+
+      if (surfer === id) {
+        userMsg = `!Account owner deleted account with ID: ${id}`;
+        // owner can save
+        return user
+          .destroy()
+          .then(() => res.json({ success: true, msg: userMsg, surfer }));
+      }
+      User.findOne({ where: { id: surfer, isAdmin: true } }).then(admin => {
+        if (admin) {
+          User.findOne({ where: { id } }).then(user => {
+            userMsg = `!Admin deleted account with ID: ${id}`;
+            // admin may save
+            return user
+              .destroy()
+              .then(() => res.json({ success: true, msg: userMsg, surfer }));
+          });
+        } else {
+          // decline otherwise, nobody else should save
+          return res.status(401).json({ msg: userMsg, surfer });
+        }
+      });
     })
     .catch(err => res.status(400).json({ success: false, error: err }));
 };
 
-// VALIDATE
+/**
+ * VALIDATE USER */
 exports.validate = method => {
   switch (method) {
-    case 'createUser': {
+    case 'addUser': {
       return [
         check('firstName')
           .optional()
@@ -163,10 +241,6 @@ exports.validate = method => {
           .withMessage('must be at least 4 chars long')
           .matches(/\d/)
           .withMessage('must contain a number')
-        //   .isInt()
-        //   .withMessage('must be an integer')
-        //   .isIn(['0000', '1000', '1100', '1300', '1700', '1900'])
-        //   .withMessage('must contain cool numbers')
       ];
     }
 
@@ -175,7 +249,7 @@ exports.validate = method => {
         check('firstName')
           .not()
           .isEmpty()
-          .withMessage('firstname is required')
+          .withMessage('firstName is required')
           .isLength({ min: 3 })
           .withMessage('must be at least 3 chars long')
           .trim()
@@ -183,7 +257,7 @@ exports.validate = method => {
         check('lastName')
           .not()
           .isEmpty()
-          .withMessage('lastname is required')
+          .withMessage('lastName is required')
           .isLength({ min: 3 })
           .withMessage('must be at least 3 chars long')
           .trim()
@@ -196,7 +270,7 @@ exports.validate = method => {
         check('isAdmin')
           .not()
           .isEmpty()
-          .withMessage('isadmin is required')
+          .withMessage('isAdmin is required')
           .isBoolean()
           .withMessage('must be a boolean')
       ];

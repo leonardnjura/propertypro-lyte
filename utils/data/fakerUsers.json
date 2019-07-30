@@ -1,164 +1,164 @@
 {
-  "users": [
-    {
-      "email": "jtest@localhost.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Johnny",
-      "lastName": "Test",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "theo@localhost.com",
-      "password": "$2a$10$VPbced3q5.g7A2Qhhmdw5uA7xxkpw9PFZa3SZRT6XYmVhr3cBHd3u",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Theodore",
-      "lastName": "Owen",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "pendo@localhost.com",
-      "password": "$2a$10$x7E3Ax61PKvRKbPxwYu1p.cbZcmoicxu/yN.96WzroGafK2s0Pbim",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/large/kristy.png",
-      "firstName": "Pendo",
-      "lastName": "Elizabeth",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "leo@localhost.com",
-      "password": "$2a$10$K.pWKKkLFhkSdThWQ4.rSehgDubEul/Wrt0JBmnppJqllqCxlJGd2",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/large/elyse.png",
-      "firstName": "Leo",
-      "lastName": null,
-      "isAdmin": true,
-      "createdAt": "2019-06-18T11:19:30.686Z",
-      "updatedAt": "2019-06-18T11:19:30.686Z"
-    },
-    {
-      "email": "alita@localhost.com",
-      "password": "$2a$10$.zmei0XaIIkEQuICKbpVQOsWfahOsDZGB2imaSzmUD2bPfpNEG.Uq",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/lena.png",
-      "firstName": "Alita",
-      "lastName": "",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "obama@localhost.com",
-      "password": "$2a$10$qppx6ze2PoDTTv/UKT2eEu/uZuOKeFIGe51H3VBeSq0AxyUSnLZ46",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/large/matthew.png",
-      "firstName": null,
-      "lastName": null,
-      "isAdmin": true,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "angel7@yahoo.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Chauncey",
-      "lastName": "Hermiston",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "petra_kozey@hotmail.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Maryjane",
-      "lastName": "Gaylord",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "abdul.hagenes@yahoo.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Aiyana",
-      "lastName": "Kassulke",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "meghan40@gmail.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Oda",
-      "lastName": "Heidenreich",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "rosemarie.greenholt@yahoo.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Antone",
-      "lastName": "Feest",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "brandon81@yahoo.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Don",
-      "lastName": "Monahan",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "aubree_wisoky67@hotmail.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Tito",
-      "lastName": "Kub",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "kaitlin.koelpin@yahoo.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Kelton",
-      "lastName": "Mills",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "michele46@hotmail.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Jettie",
-      "lastName": "Becker",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    },
-    {
-      "email": "garett.leannon10@hotmail.com",
-      "password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-      "avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-      "firstName": "Rusty",
-      "lastName": "Cole",
-      "isAdmin": false,
-      "createdAt": "2019-07-18T11:19:30.686Z",
-      "updatedAt": "2019-07-18T11:19:30.686Z"
-    }
-  ]
+	"users": [
+		{
+			"email": "jtest@localhost.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Johnny",
+			"lastName": "Test",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "theo@localhost.com",
+			"password": "$2a$10$VPbced3q5.g7A2Qhhmdw5uA7xxkpw9PFZa3SZRT6XYmVhr3cBHd3u",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Theodore",
+			"lastName": "Owen",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "pendo@localhost.com",
+			"password": "$2a$10$x7E3Ax61PKvRKbPxwYu1p.cbZcmoicxu/yN.96WzroGafK2s0Pbim",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/large/kristy.png",
+			"firstName": "Pendo",
+			"lastName": "Elizabeth",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "leo@localhost.com",
+			"password": "$2a$10$K.pWKKkLFhkSdThWQ4.rSehgDubEul/Wrt0JBmnppJqllqCxlJGd2",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/large/elyse.png",
+			"firstName": "Leo",
+			"lastName": null,
+			"isAdmin": true,
+			"createdAt": "2019-06-18T11:19:30.686Z",
+			"updatedAt": "2019-06-18T11:19:30.686Z"
+		},
+		{
+			"email": "alita@localhost.com",
+			"password": "$2a$10$.zmei0XaIIkEQuICKbpVQOsWfahOsDZGB2imaSzmUD2bPfpNEG.Uq",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/lena.png",
+			"firstName": "Alita",
+			"lastName": "",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "obama@localhost.com",
+			"password": "$2a$10$qppx6ze2PoDTTv/UKT2eEu/uZuOKeFIGe51H3VBeSq0AxyUSnLZ46",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/large/matthew.png",
+			"firstName": null,
+			"lastName": null,
+			"isAdmin": true,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "reanna18@yahoo.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Ara",
+			"lastName": "Powlowski",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "korey_schaefer@gmail.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Oren",
+			"lastName": "Moen",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "jonathon_swaniawski97@gmail.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Lucie",
+			"lastName": "Stoltenberg",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "jaquelin_durgan0@hotmail.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Mathew",
+			"lastName": "Leffler",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "samson.windler63@yahoo.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Hardy",
+			"lastName": "Borer",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "dangelo_price90@gmail.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Jaiden",
+			"lastName": "Mosciski",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "ana35@gmail.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Frances",
+			"lastName": "Shields",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "onie_schuppe@gmail.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Scotty",
+			"lastName": "Windler",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "merle_sauer44@yahoo.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Jazmyne",
+			"lastName": "Koelpin",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		},
+		{
+			"email": "jayde79@yahoo.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Aditya",
+			"lastName": "Parker",
+			"isAdmin": false,
+			"createdAt": "2019-07-18T11:19:30.686Z",
+			"updatedAt": "2019-07-18T11:19:30.686Z"
+		}
+	]
 }

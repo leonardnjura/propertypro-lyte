@@ -1,11 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-  const Image = sequelize.define(
-    'Image',
+  const Flag = sequelize.define(
+    'Flag',
     {
       id: {
-        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        autoIncrement: true
+        type: DataTypes.INTEGER
       },
       propertyId: {
         type: DataTypes.INTEGER,
@@ -15,16 +16,17 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id'
         }
       },
-      imageName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+      reason: {
+        type: DataTypes.STRING
+      },
+      description: {
+        type: DataTypes.STRING
       }
     },
     {}
   );
-  Image.associate = function(models) {
+  Flag.associate = function(models) {
     // associations can be defined here
   };
-  return Image;
+  return Flag;
 };
