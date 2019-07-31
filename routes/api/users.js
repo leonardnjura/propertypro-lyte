@@ -11,6 +11,11 @@ const { User } = require('../../models/index');
 // @access  Public
 router.get('/users', userController.fetchAllUsers);
 
+// @route   GET api/auth/users/search?term=email
+// @desc    Search all users
+// @access  Public
+router.get('/users/search', userController.searchAllUsers);
+
 // @route   GET api/auth/users/:id
 // @desc    Fetch one user
 // @access  Public

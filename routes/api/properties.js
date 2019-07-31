@@ -10,6 +10,11 @@ const propertyController = require('../../controllers/propertyController');
 // @access  Public
 router.get('/', propertyController.fetchAllProperties);
 
+// @route   GET api/properties/search?term=type
+// @desc    Search all properties
+// @access  Public
+router.get('/search', propertyController.searchAllProperties);
+
 // @route   GET api/properties/:id
 // @desc    Fetch one property
 // @access  Public

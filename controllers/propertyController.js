@@ -1,12 +1,23 @@
 const { check, validationResult } = require('express-validator');
 
+const Sequelize = require('sequelize');
 const { User, Property } = require('../models/index');
+
+const { Op } = Sequelize;
 
 /**
  * REST */
 exports.fetchAllProperties = (req, res) => {
   Property.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
-    .then(items => res.status(200).json(items))
+    .then(properties => res.status(200).json({ properties }))
+    .catch(err => console.log(err));
+};
+
+exports.searchAllProperties = (req, res) => {
+  let { term } = req.query;
+  term = term.toLowerCase();
+  Property.findAll({ where: { type: { [Op.like]: `%${term}%` } } })
+    .then(results => res.json({ results }))
     .catch(err => console.log(err));
 };
 
