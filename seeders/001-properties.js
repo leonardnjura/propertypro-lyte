@@ -1,5 +1,9 @@
 require('dotenv').config(); // to access .env
-const properties = require('../utils/data/properties.json');
+const myProperties = require('../utils/data/properties.json');
+const fakerProperties = require('../utils/data/fakerProperties.json');
+
+const isDevMode = process.env.NODE_ENV === 'development';
+const properties = isDevMode ? myProperties : fakerProperties;
 
 module.exports = {
   up(queryInterface) {

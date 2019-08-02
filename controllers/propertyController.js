@@ -1,15 +1,87 @@
 const { check, validationResult } = require('express-validator');
 
 const Sequelize = require('sequelize');
-const { User, Property } = require('../models/index');
+const { User, Property, Image, Flag } = require('../models/index');
 
 const { Op } = Sequelize;
 
 /**
  * REST */
 exports.fetchAllProperties = (req, res) => {
-  Property.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
-    .then(properties => res.status(200).json({ properties }))
+  Property.belongsTo(User, { foreignKey: 'owner' });
+  Property.hasMany(Image, { foreignKey: 'propertyId' });
+  Property.hasMany(Flag, { foreignKey: 'propertyId' });
+
+  const queRRi = {};
+  let pageNo = 1;
+  let pageSize = 10;
+  let totalCount = null;
+  let totalPages = null;
+  queRRi.include = [User, Image, Flag];
+  queRRi.order = [['updatedAt', 'DESC']];
+  const cols = ['id', 'updatedAt', 'price', 'type', 'city', 'state'];
+
+  if (req.query.include) {
+    const include = parseInt(req.query.include, 10);
+    if (include === 0) queRRi.include = [];
+  }
+
+  if (req.query.orderBy) {
+    const { orderBy } = req.query;
+    if (cols.includes(orderBy)) {
+      queRRi.order = [[orderBy, 'ASC']];
+    }
+  }
+
+  if (req.query.pageNo) {
+    const userPageNo = parseInt(req.query.pageNo, 10);
+    if (userPageNo < 0 || userPageNo === 0)
+      return res
+        .status(400)
+        .json({ msg: '!Invalid page number, should start with 1' });
+    pageNo = userPageNo;
+  }
+
+  if (req.query.pageSize) {
+    const userPageSize = parseInt(req.query.pageSize, 10);
+    if (userPageSize < 0 || userPageSize === 0)
+      return res
+        .status(400)
+        .json({ msg: '!Invalid page size, should start with 1' });
+    pageSize = userPageSize;
+  }
+
+  if (pageNo) {
+    queRRi.offset = pageSize * (pageNo - 1);
+    queRRi.limit = pageSize;
+  }
+  queRRi.where = {};
+
+  Property.count()
+    .then(count => {
+      totalCount = count;
+      totalPages = Math.ceil(totalCount / pageSize);
+    })
+    .catch(err => console.log(err));
+
+  Property.findAll(queRRi)
+    .then(properties => {
+      const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+      const nextPage = pageNo + 1;
+      let nextPageLink = `${fullUrl
+        .split('?')
+        .shift()}?pageNo=${nextPage}&pageSize=${pageSize}`;
+      if (nextPage > totalPages) {
+        nextPageLink = null;
+      }
+      return res.status(200).json({
+        properties,
+        count: totalCount,
+        countPerPage: pageSize,
+        totalPages,
+        nextPageLink
+      });
+    })
     .catch(err => console.log(err));
 };
 
@@ -22,7 +94,13 @@ exports.searchAllProperties = (req, res) => {
 };
 
 exports.fetchOneProperty = (req, res) => {
-  Property.findOne({ where: { id: req.params.id } })
+  Property.belongsTo(User, { foreignKey: 'owner' });
+  Property.hasMany(Image, { foreignKey: 'propertyId' });
+  Property.hasMany(Flag, { foreignKey: 'propertyId' });
+  Property.findOne({
+    where: { id: req.params.id },
+    include: [User, Image, Flag]
+  })
     .then(property => {
       if (!property) {
         // property object is always there but object may be null
@@ -38,8 +116,7 @@ exports.fetchOneProperty = (req, res) => {
 exports.addProperty = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
+    return res.status(422).json({ errors: errors.array() });
   }
   const { price, state, city, address, type, imageUrl } = req.body;
   const owner = req.user.id; // owner in token
@@ -86,8 +163,7 @@ exports.addProperty = (req, res) => {
 exports.updatePropertyStatus = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
+    return res.status(422).json({ errors: errors.array() });
   }
 
   const { status } = req.body;
@@ -104,7 +180,7 @@ exports.updatePropertyStatus = (req, res) => {
        * update already? no wait..
        * only property owner (or admin) to finish this */
       let userMsg = '!Oops, you are not the property owner';
-      const { owner } = property;
+      const realOwner = property.owner;
       const surfer = req.user.id;
 
       Property.findOne({
@@ -138,7 +214,7 @@ exports.updatePropertyStatus = (req, res) => {
             // nobody else should save
             return res
               .status(401)
-              .json({ success: false, msg: userMsg, owner, surfer });
+              .json({ success: false, msg: userMsg, realOwner, surfer });
           }
         });
       });
@@ -149,8 +225,7 @@ exports.updatePropertyStatus = (req, res) => {
 exports.updatePropertyInfo = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
+    return res.status(422).json({ errors: errors.array() });
   }
 
   const { price, state, city, address, type, imageUrl, status } = req.body;
@@ -167,7 +242,7 @@ exports.updatePropertyInfo = (req, res) => {
        * update already? no wait..
        * only property owner (or admin) to finish this */
       let userMsg = '!Oops, you are not the property owner';
-      const { owner } = property;
+      const realOwner = property.owner;
       const surfer = req.user.id;
 
       Property.findOne({
@@ -209,7 +284,7 @@ exports.updatePropertyInfo = (req, res) => {
             // nobody else should save
             return res
               .status(401)
-              .json({ success: false, msg: userMsg, owner, surfer });
+              .json({ success: false, msg: userMsg, realOwner, surfer });
           }
         });
       });
@@ -231,7 +306,7 @@ exports.deleteProperty = (req, res) => {
        * delete already? no wait..
        * only property owner (or admin) to finish this */
       let userMsg = '!Oops, you are not the property owner';
-      const { owner } = property;
+      const realOwner = property.owner;
       const surfer = req.user.id;
 
       Property.findOne({
@@ -245,7 +320,7 @@ exports.deleteProperty = (req, res) => {
             .then(() =>
               res
                 .status(200)
-                .json({ success: true, msg: userMsg, owner, surfer })
+                .json({ success: true, msg: userMsg, realOwner, surfer })
             );
         }
         User.findOne({ where: { id: surfer, isAdmin: true } }).then(user => {
@@ -260,14 +335,14 @@ exports.deleteProperty = (req, res) => {
                 .then(() =>
                   res
                     .status(200)
-                    .json({ success: true, msg: userMsg, owner, surfer })
+                    .json({ success: true, msg: userMsg, realOwner, surfer })
                 );
             });
           } else {
             // nobody else should expunge
             return res
               .status(401)
-              .json({ success: false, msg: userMsg, owner, surfer });
+              .json({ success: false, msg: userMsg, realOwner, surfer });
           }
         });
       });

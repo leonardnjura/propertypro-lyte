@@ -12,3 +12,4 @@ package-lock.json
 .DS_Store
 .env
 NOTES.txt
+faker.js

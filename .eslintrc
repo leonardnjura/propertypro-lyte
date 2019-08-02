@@ -27,5 +27,6 @@
     "object-curly-newline": 0,
     "max-len": ["error", 80],
     "prettier/prettier": "error"
-  }
+  },
+  "parser": "babel-eslint"
 }

@@ -26,6 +26,14 @@ gulp.task('dbusers', cb => {
   });
 });
 
+gulp.task('dbproperties', cb => {
+  exec('node ./utils/factory/generateProperties.js', (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
 gulp.task('dbcreate', cb => {
   exec('npx sequelize-cli db:create', (err, stdout, stderr) => {
     console.log(stdout);
@@ -52,5 +60,8 @@ gulp.task('dbseed', cb => {
 
 gulp.task('hello', () => console.log('Hello gulp'));
 
-gulp.task('initdb', gulp.series(['dbusers', 'dbmigrate', 'dbseed']));
+gulp.task(
+  'initdb',
+  gulp.series(['dbusers', 'dbproperties', 'dbmigrate', 'dbseed'])
+);
 gulp.task('default', gulp.parallel(['nodestart', 'nodetest']));

@@ -15,10 +15,13 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id'
         }
       },
-      imageName: {
+      imageCaption: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
+      },
+      imageUrl: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {}
