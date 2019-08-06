@@ -1,0 +1,868 @@
+swagger: "2.0"
+info:
+  description: "A REST api built in with Postgres, Express and NodeJS. Provides a platform where people can create and/or search properties for sale or rent. You can view the hosted app [here](https://propertypro-lyte.herokuapp.com/)."
+  version: "1.0.0"
+  title: "propertypro lyte"
+  
+  #termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "leonard.njura@gmail.com"
+  #license:
+   # name: "Apache 2.0"
+    #url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    
+host: "localhost:4000"
+basePath: "/api"
+
+
+tags:
+- name: "auth"
+  description: "Everything about users"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/leonardnjura/propertypro-lyte"
+- name: "properties"
+  description: "Everything about properties"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/leonardnjura/propertypro-lyte"
+- name: "images"
+  description: "Everything about property images"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/leonardnjura/propertypro-lyte"
+- name: "flags"
+  description: "Everything about property flags"
+  externalDocs:
+    description: "Find out more"
+    url: "https://github.com/leonardnjura/propertypro-lyte"
+      
+    
+
+schemes:
+- "https"
+- "http"
+paths:
+  /auth/signup:
+    post:
+      tags:
+      - "auth"
+      summary: "Registers a user."
+      description: ""
+      operationId: "addUser"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Create object"
+        required: true
+        schema:
+          $ref: "#/definitions/User_POST_SIGNUP"
+      responses:
+        default:
+          description: "successful operation"
+  
+  /auth/signin:
+    post:
+      tags:
+      - "auth"
+      summary: "Authenticates a user and returns token."
+      description: ""
+      operationId: "loginUser"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/User_POST_SIGNIN"
+      responses:
+        default:
+          description: "successful operation"
+  
+  /auth/users:
+    get:
+      tags:
+      - "auth"
+      summary: "Gets all users."
+      description: ""
+      operationId: "fetchAllUsers"
+      produces:
+      
+      - "application/json"
+      responses:
+        default:
+          description: "successful operation"
+  
+  
+  /auth/whoami:
+    get:
+      tags:
+      - "auth"
+      summary: "Determines user in token header."
+      description: ""
+      operationId: "fetchMe"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+  
+  
+  
+  
+  /auth/users/{id}:
+    get:
+      tags:
+      - "auth"
+      summary: "Gets one user by id."
+      description: ""
+      operationId: "fetchOneUser"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+  
+    put:
+      tags:
+      - "auth"
+      summary: "Updates user profile."
+      description: ""
+      operationId: "updateUser"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "path"
+        name: "id"
+        description: ""
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Update object"
+        required: true
+        schema:
+          $ref: "#/definitions/User_PUT_UPDATE"
+      responses:
+        default:
+          description: "successful operation"  
+          
+          
+    delete:
+      tags:
+      - "auth"
+      summary: "Chucks user."
+      description: ""
+      operationId: "deleteUser"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+  
+     
+          
+  /auth/users/{id}/promote:
+    patch:
+      tags:
+      - "auth"
+      summary: "Marks user as admin."
+      description: ""
+      operationId: "promoteUser"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "path"
+        name: "id"
+        description: ""
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Update object"
+        required: true
+        schema:
+          $ref: "#/definitions/User_PATCH_PROMOTE"
+      responses:
+        default:
+          description: "successful operation"  
+          
+          
+  /auth/users/search:
+    get:
+      tags:
+      - "auth"
+      summary: "Searches users"
+      description: ""
+      operationId: "searchUsers"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "term"
+        description: "try search: pendo"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+
+  #±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±   
+    
+  /properties:
+    post:
+      tags:
+      - "properties"
+      summary: "Registers a property."
+      description: ""
+      operationId: "addProperty"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Create object"
+        required: true
+        schema:
+           $ref: "#/definitions/Property_POST_ADD"
+      responses:
+        default:
+          description: "successful operation"
+
+    get:
+      tags:
+      - "properties"
+      summary: "Gets all properties."
+      description: ""
+      operationId: "fetchAllProperties"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "pageNo"
+        description: ""
+        required: false
+        type: "integer"
+      - in: "query"
+        name: "pageSize"
+        description: ""
+        required: false
+        type: "integer"
+      - in: "query"
+        name: "include"
+        description: ""
+        required: false
+        type: "integer"
+      - in: "query"
+        name: "orderBy"
+        description: ""
+        required: false
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+    
+    
+          
+  /properties/{id}:
+    get:
+      tags:
+      - "properties"
+      summary: "Gets one property by id."
+      description: ""
+      operationId: "fetchOneProperty"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+  
+  
+    put:
+      tags:
+      - "properties"
+      summary: "Updates property info."
+      description: ""
+      operationId: "updatePropertyInfo"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "path"
+        name: "id"
+        description: ""
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Update object"
+        required: true
+        schema:
+          $ref: "#/definitions/Property_PUT_UPDATE_INFO"
+      responses:
+        default:
+          description: "successful operation"  
+          
+          
+    delete:
+      tags:
+      - "properties"
+      summary: "Chucks property."
+      description: ""
+      operationId: "deleteProperty"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+   
+          
+  /properties/{id}/sold:
+    patch:
+      tags:
+      - "properties"
+      summary: "Marks property as sold or available."
+      description: ""
+      operationId: "updatePropertyStatus"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "path"
+        name: "id"
+        description: ""
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Update object"
+        required: true
+        schema:
+          $ref: "#/definitions/Property_PATCH_UPDATE_STATUS"
+      responses:
+        default:
+          description: "successful operation"           
+          
+   
+  /properties/{id}/images:
+    post:
+      tags:
+      - "properties"
+      summary: "Adds a property image."
+      description: ""
+      operationId: "addImage"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "path"
+        name: "id"
+        description: ""
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Create object"
+        required: true
+        schema:
+          $ref: "#/definitions/Image_POST_ADD"
+      responses:
+        default:
+          description: "successful operation"           
+          
+  /properties/{id}/flags:
+    post:
+      tags:
+      - "properties"
+      summary: "Adds a property flag."
+      description: ""
+      operationId: "addFlag"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - in: "path"
+        name: "id"
+        description: ""
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        description: "Create object"
+        required: true
+        schema:
+          $ref: "#/definitions/Flag_POST_ADD"
+      responses:
+        default:
+          description: "successful operation"  
+          
+        
+  /properties/search:
+    get:
+      tags:
+      - "properties"
+      summary: "Searches properties"
+      description: ""
+      operationId: "searchProperties"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "term"
+        description: "try search: manyatta"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+
+  #±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±          
+   
+  /images:
+    get:
+      tags:
+      - "images"
+      summary: "Gets all images."
+      description: ""
+      operationId: "fetchAllImages"
+      produces:
+      
+      - "application/json"
+      responses:
+        default:
+          description: "successful operation"
+   
+   
+          
+  /images/{id}:
+    get:
+      tags:
+      - "images"
+      summary: "Gets one image by id."
+      description: ""
+      operationId: "fetchOneImage"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+  
+          
+    delete:
+      tags:
+      - "images"
+      summary: "Chucks image."
+      description: ""
+      operationId: "deleteImage"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - name: "id"
+        in: "path"
+        description: ""
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+ 
+  /images/search:
+    get:
+      tags:
+      - "images"
+      summary: "Searches images"
+      description: ""
+      operationId: "searchImages"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "term"
+        description: "try search: room"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+
+  #±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±± 
+   
+  /flags:
+    get:
+      tags:
+      - "flags"
+      summary: "Gets all flags."
+      description: ""
+      operationId: "fetchAllFlags"
+      produces:
+      
+      - "application/json"
+      responses:
+        default:
+          description: "successful operation"
+   
+   
+          
+  /flags/{id}:
+    get:
+      tags:
+      - "flags"
+      summary: "Gets one flag by id."
+      description: ""
+      operationId: "fetchOneFlag"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be fetched. Use 1 for testing."
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+  
+          
+    delete:
+      tags:
+      - "flags"
+      summary: "Chucks flag."
+      description: ""
+      operationId: "deleteFlag"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-auth-token"
+        description: ""
+        required: true
+        type: "string"
+      - name: "id"
+        in: "path"
+        description: "The id that needs to be deleted. Use 1 for testing."
+        required: true
+        type: "integer"
+      responses:
+        default:
+          description: "successful operation"
+ 
+ 
+  /flags/search:
+    get:
+      tags:
+      - "flags"
+      summary: "Searches flags"
+      description: ""
+      operationId: "searchFlags"
+      produces:
+      
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "term"
+        description: "try search: kericho"
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+
+  #±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±  
+
+###############################################################
+#securityDefinitions:
+  #petstore_auth:
+    #type: "oauth2"
+    #authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    #flow: "implicit"
+    #scopes:
+      #write:pets: "modify pets in your account"
+      #read:pets: "read your pets"
+ # api_key:
+    #type: "apiKey"
+    #name: "api_key"
+    #in: "header"
+    
+    
+    
+    
+definitions:
+  #User@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
+  User_POST_SIGNUP:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+        default: null
+        example: "Johnny"
+      lastName:
+        type: "string"
+        default: null
+        example: "Test"
+      email:
+        type: "string"
+        example: "jtest@localhost.com"
+      password:
+        type: "string"
+        example: "0000"
+    xml:
+      name: "User_POST_SIGNUP"    
+      
+            
+  User_POST_SIGNIN:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        example: "jtest@localhost.com"
+      password:
+        type: "string"
+        example: "0000"
+    xml:
+      name: "User_POST_SIGNIN"    
+    
+        
+  User_PUT_UPDATE:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+        example: "Johnny"
+      lastName:
+        type: "string"
+        example: "Bravo"
+    xml:
+      name: "User_PUT_UPDATE"
+      
+     
+  User_PATCH_PROMOTE:
+    type: "object"
+    properties:
+      isAdmin:
+        type: "boolean"
+        example: true
+    xml:
+      name: "User_PATCH_PROMOTE"
+      
+
+      
+      
+  #Property@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
+  Property_POST_ADD:
+    type: "object"
+    properties:
+      price:
+        type: "integer"
+        example: 26000
+      state:
+        type: "string"
+        example: "Sierra Leone"
+      city:
+        type: "string"
+        example: "Freetown"
+      address:
+        type: "string"
+        example: "Jomo Kenyatta Rd"
+      type:
+        type: "string"
+        example: "3-bedroom flat"
+      imageUrl:
+        type: "string"
+        example: "http://pixbay.com/image1.jpg"
+    xml:
+      name: "Property_POST_ADD"
+  
+  
+  Property_PATCH_UPDATE_STATUS:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        description: "Property Status"
+        example: "available"
+        enum:
+        - "sold"
+        - "available"
+    xml:
+      name: "Property_PATCH_UPDATE_STATUS"
+    
+       
+  Property_PUT_UPDATE_INFO:
+    type: "object"
+    properties:
+      price:
+        type: "integer"
+        example: 26000
+      state:
+        type: "string"
+        example: "Nairobi"
+      city:
+        type: "string"
+        example: "Karen"
+      address:
+        type: "string"
+        example: "Marist Rd"
+      type:
+        type: "string"
+        example: "4-bedroom maisonette"
+      imageUrl:
+        type: "string"
+        example: "http://pixbay.com/image1.jpg"
+      status:
+        type: "string"
+        example: "available"
+        enum:
+        - "sold"
+        - "available"
+    xml:
+      name: "Property_PUT_UPDATE_INFO"
+       
+      
+    
+      
+  #Image@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#
+  Image_POST_ADD:
+    type: "object"
+    properties:
+      imageCaption:
+        type: "string"
+        example: "Living room"
+      imageUrl:
+        type: "string"
+        example: "http://pixbay.com/image1.jpg"
+    xml:
+      name: "Image_POST_ADD"
+     
+      
+  #Flag@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#    
+  Flag_POST_ADD:
+    type: "object"
+    properties:
+      reason:
+        type: "string"
+        example: "pricing"
+      description:
+        type: "string"
+        example: "Pricey because only trump-autographed gold taps in the master bedroom"
+    xml:
+      name: "Flag_POST_ADD"
+      
+      
+      
+  #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@# 
+           
+      
+ 
+        
+        
+# externalDocs:
+  # description: "Find out more about Swagger"
+  # url: "http://swagger.io"

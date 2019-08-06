@@ -254,6 +254,36 @@ describe('serverTests', () => {
         });
     });
 
+    it('GET should return pageCount warning', done => {
+      request(app)
+        .get('/api/properties/?pageNo=0&pageSize=10&include=0&orderBy=id')
+        .expect('Content-type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 400);
+          assert.include(res.body.msg, 'Invalid page number');
+          return done();
+        });
+    });
+
+    it('GET should return pageSize warning', done => {
+      request(app)
+        .get('/api/properties/?pageNo=1&pageSize=0&include=0&orderBy=id')
+        .expect('Content-type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 400);
+          assert.include(res.body.msg, 'Invalid page size');
+          return done();
+        });
+    });
+
     it('GET should return page not found on non-existent property', done => {
       request(app)
         .get(`/api/properties/${missingProperty}`)
