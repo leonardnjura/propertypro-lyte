@@ -38,6 +38,9 @@ describe('serverTests', () => {
     type: '5-bedroom maisonette',
     imageUrl: `https://www.sony.com/image/1${Date.now()}.jpg`
   };
+  const onePropertyInvalidInfoEditData = {
+    price: 'foo'
+  };
   const twoPropertyData = {
     price: '15000',
     state: 'Kenya',
@@ -163,11 +166,17 @@ describe('serverTests', () => {
           console.log(res.body);
           assert.equal(res.status, 200);
           assert.typeOf(res.body.properties[0], 'object');
+          assert.typeOf(res.body.properties[0].User, 'object');
+          assert.typeOf(res.body.properties[0].Images, 'array');
+          assert.typeOf(res.body.properties[0].Flags, 'array');
           assert.property(res.body.properties[0], 'id');
           assert.property(res.body.properties[0], 'owner');
           assert.property(res.body.properties[0], 'status');
           assert.property(res.body.properties[0], 'price');
           assert.property(res.body.properties[0], 'imageUrl');
+          assert.property(res.body.properties[0], 'User');
+          assert.property(res.body.properties[0], 'Images');
+          assert.property(res.body.properties[0], 'Flags');
           return done();
         });
     });
@@ -205,12 +214,42 @@ describe('serverTests', () => {
           console.log('ONE PROPERTY', res.body);
           assert.equal(res.status, 200);
           assert.typeOf(res.body, 'object');
+          assert.typeOf(res.body.property.User, 'object');
+          assert.typeOf(res.body.property.Images, 'array');
+          assert.typeOf(res.body.property.Flags, 'array');
           assert.property(res.body, 'property');
           assert.property(res.body.property, 'id');
           assert.property(res.body.property, 'owner');
           assert.property(res.body.property, 'status');
           assert.property(res.body.property, 'price');
           assert.property(res.body.property, 'imageUrl');
+          assert.property(res.body.property, 'User');
+          assert.property(res.body.property, 'Images');
+          assert.property(res.body.property, 'Flags');
+          return done();
+        });
+    });
+
+    it('GET should return count and pagination details', done => {
+      request(app)
+        .get('/api/properties/?pageNo=1&pageSize=10&include=0&orderBy=id')
+        .expect('Content-type', /json/)
+        .expect(200) // http status
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 200);
+          assert.property(res.body, 'properties');
+          assert.property(res.body, 'count');
+          assert.property(res.body, 'countPerPage');
+          assert.property(res.body, 'totalPages');
+          assert.property(res.body, 'nextPageLink');
+          assert.typeOf(res.body.count, 'number');
+          assert.typeOf(res.body.countPerPage, 'number');
+          assert.typeOf(res.body.totalPages, 'number');
+          assert.include(res.body.nextPageLink, 'http');
           return done();
         });
     });
@@ -266,19 +305,24 @@ describe('serverTests', () => {
     });
 
     it('POST shall not double register a property[imageUrl]', done => {
-      request(app)
-        .post('/api/properties')
-        .set('x-auth-token', oneRegularUserToken)
-        .send(onePropertyData)
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          // console.log(res.body);
-          assert.include(res.body.msg, 'Oops, this property is already listed');
-          assert.equal(res.status, 400);
-          return done();
-        });
+      setTimeout(() => {
+        request(app)
+          .post('/api/properties')
+          .set('x-auth-token', oneRegularUserToken)
+          .send(onePropertyData)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            // console.log(res.body);
+            assert.include(
+              res.body.msg,
+              'Oops, this property is already listed'
+            );
+            assert.equal(res.status, 400);
+          });
+      }, 2000);
+      return done();
     });
 
     it('POST another user should register a property', done => {
@@ -394,6 +438,22 @@ describe('serverTests', () => {
         });
     });
 
+    it('PATCH shall not edit a missing property', done => {
+      request(app)
+        .patch(`/api/properties/${missingProperty}/sold`)
+        .set('x-auth-token', oneRegularUserToken)
+        .send(onePropertyUpdateStatusData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          // console.log(res.body);
+          assert.include(res.body.msg, 'Property not found');
+          assert.equal(res.status, 404);
+          return done();
+        });
+    });
+
     it('PATCH shall not edit status if not with sold or available', done => {
       request(app)
         .patch(`/api/properties/${onePropertyId}/sold`)
@@ -446,6 +506,22 @@ describe('serverTests', () => {
         });
     });
 
+    it('PATCH should catch db errors', done => {
+      request(app)
+        .patch(`/api/properties/${badInt}/sold`)
+        .set('x-auth-token', oneSuperUserToken)
+        .send(onePropertyUpdateStatusData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          // console.log(res.body);
+          assert.equal(res.body.error.name, 'SequelizeDatabaseError');
+          assert.equal(res.status, 400);
+          return done();
+        });
+    });
+
     it('PUT should edit info of property', done => {
       request(app)
         .put(`/api/properties/${onePropertyId}`)
@@ -478,6 +554,24 @@ describe('serverTests', () => {
           // console.log(res.body);
           assert.include(res.body.msg, 'Property not found');
           assert.equal(res.status, 404);
+          return done();
+        });
+    });
+
+    it('PUT should validate info edit data', done => {
+      request(app)
+        .put(`/api/properties/${onePropertyId}`)
+        .set('x-auth-token', oneRegularUserToken)
+        .send(onePropertyInvalidInfoEditData)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          assert.include(
+            res.body.errors[0].msg,
+            'must be a float or double precision number'
+          );
+          assert.equal(res.status, 422);
           return done();
         });
     });
@@ -531,21 +625,23 @@ describe('serverTests', () => {
     });
 
     it('DELETE should expunge property', done => {
-      request(app)
-        .delete(`/api/properties/${onePropertyId}`)
-        .set('x-auth-token', oneRegularUserToken)
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          // console.log(res.body);
-          assert.include(
-            res.body.msg,
-            `Property owner deleted property with ID: ${onePropertyId}`
-          );
-          assert.equal(res.status, 200);
-          return done();
-        });
+      setTimeout(() => {
+        request(app)
+          .delete(`/api/properties/${onePropertyId}`)
+          .set('x-auth-token', oneRegularUserToken)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            // console.log(res.body);
+            assert.include(
+              res.body.msg,
+              `Property owner deleted property with ID: ${onePropertyId}`
+            );
+            assert.equal(res.status, 200);
+          });
+      }, 2500);
+      return done();
     });
 
     it('DELETE shall not expunge property without owner token', done => {
@@ -564,21 +660,23 @@ describe('serverTests', () => {
     });
 
     it('DELETE admin may expunge property', done => {
-      request(app)
-        .delete(`/api/properties/${twoPropertyId}`)
-        .set('x-auth-token', oneSuperUserToken)
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          // console.log(res.body);
-          assert.include(
-            res.body.msg,
-            `Admin deleted property with ID: ${twoPropertyId}`
-          );
-          assert.equal(res.status, 200);
-          return done();
-        });
+      setTimeout(() => {
+        request(app)
+          .delete(`/api/properties/${twoPropertyId}`)
+          .set('x-auth-token', oneSuperUserToken)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            // console.log(res.body);
+            assert.include(
+              res.body.msg,
+              `Admin deleted property with ID: ${twoPropertyId}`
+            );
+            assert.equal(res.status, 200);
+          });
+      }, 2500);
+      return done();
     });
 
     it('DELETE shall not expunge a missing property', done => {

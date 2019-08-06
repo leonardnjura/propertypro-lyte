@@ -1,0 +1,60 @@
+{
+  "flags": [
+    {
+      "reason": "pricing",
+      "description": "So we priced this flat this way because of bla bla bla and every summer we  have an offer",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 5
+    },
+    {
+      "reason": "pricing",
+      "description": "So we priced this flat this way because of bla bla bla and every winter we  have an offer",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 4
+    },
+    {
+      "reason": "pricing",
+      "description": "So we priced this flat this way because of bla bla bla and every autumn we  have an offer",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 3
+    },
+    {
+      "reason": "location",
+      "description": "Fertile soil in kericho locality means happy home owner",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 3
+    },
+    {
+      "reason": "pricing",
+      "description": "So we priced this flat this way because of bla bla bla and every spring we  have an offer",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 2
+    },
+    {
+      "reason": "location",
+      "description": "Godly women in kericho locality means happy home owner",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 2
+    },
+    {
+      "reason": "design",
+      "description": "The state of the art interior designs were crafted by renown Italian Leo Dada",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 2
+    },
+    {
+      "reason": "pricing",
+      "description": "Interested parties shall not complain of the price because all taps in the home are gold-plated",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 1
+    }
+  ]
+}

@@ -26,6 +26,8 @@ app.get('/', (req, res) => {
 // use routes
 app.use('/api/auth', require('./routes/api/users'));
 app.use('/api/properties', require('./routes/api/properties'));
+app.use('/api/images', require('./routes/api/images'));
+app.use('/api/flags', require('./routes/api/flags'));
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {

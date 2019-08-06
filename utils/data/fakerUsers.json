@@ -61,104 +61,104 @@
 			"updatedAt": "2019-07-18T11:19:30.686Z"
 		},
 		{
-			"email": "reanna18@yahoo.com",
+			"email": "dixie.kemmer@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Ara",
-			"lastName": "Powlowski",
+			"firstName": "Dixie",
+			"lastName": "Kemmer",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-06T05:43:04.240Z",
+			"updatedAt": "2019-08-06T05:43:04.240Z"
 		},
 		{
-			"email": "korey_schaefer@gmail.com",
+			"email": "lois.russel@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Oren",
-			"lastName": "Moen",
+			"firstName": "Lois",
+			"lastName": "Russel",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-06T09:32:57.647Z",
+			"updatedAt": "2019-08-06T09:32:57.647Z"
 		},
 		{
-			"email": "jonathon_swaniawski97@gmail.com",
+			"email": "joan.zboncak@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Lucie",
-			"lastName": "Stoltenberg",
+			"firstName": "Joan",
+			"lastName": "Zboncak",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-06T01:09:47.092Z",
+			"updatedAt": "2019-08-06T01:09:47.092Z"
 		},
 		{
-			"email": "jaquelin_durgan0@hotmail.com",
+			"email": "jamey.halvorson@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Mathew",
+			"firstName": "Jamey",
+			"lastName": "Halvorson",
+			"isAdmin": false,
+			"createdAt": "2019-08-05T20:46:42.749Z",
+			"updatedAt": "2019-08-05T20:46:42.749Z"
+		},
+		{
+			"email": "maci.kertzmann@localhost.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Maci",
+			"lastName": "Kertzmann",
+			"isAdmin": false,
+			"createdAt": "2019-08-06T01:59:31.453Z",
+			"updatedAt": "2019-08-06T01:59:31.453Z"
+		},
+		{
+			"email": "michaela.leffler@localhost.com",
+			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
+			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
+			"firstName": "Michaela",
 			"lastName": "Leffler",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-05T20:39:16.836Z",
+			"updatedAt": "2019-08-05T20:39:16.836Z"
 		},
 		{
-			"email": "samson.windler63@yahoo.com",
+			"email": "chaz.borer@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Hardy",
+			"firstName": "Chaz",
 			"lastName": "Borer",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-06T12:28:13.727Z",
+			"updatedAt": "2019-08-06T12:28:13.727Z"
 		},
 		{
-			"email": "dangelo_price90@gmail.com",
+			"email": "destin.bernhard@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Jaiden",
-			"lastName": "Mosciski",
+			"firstName": "Destin",
+			"lastName": "Bernhard",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-05T17:36:13.344Z",
+			"updatedAt": "2019-08-05T17:36:13.344Z"
 		},
 		{
-			"email": "ana35@gmail.com",
+			"email": "amelie.hand@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Frances",
-			"lastName": "Shields",
+			"firstName": "Amelie",
+			"lastName": "Hand",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-05T19:46:10.166Z",
+			"updatedAt": "2019-08-05T19:46:10.166Z"
 		},
 		{
-			"email": "onie_schuppe@gmail.com",
+			"email": "erich.goldner@localhost.com",
 			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
 			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Scotty",
-			"lastName": "Windler",
+			"firstName": "Erich",
+			"lastName": "Goldner",
 			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
-		},
-		{
-			"email": "merle_sauer44@yahoo.com",
-			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Jazmyne",
-			"lastName": "Koelpin",
-			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
-		},
-		{
-			"email": "jayde79@yahoo.com",
-			"password": "$2a$10$4jJwsHNVGUXpzQgWJn8JuuLLiP1NiVuVFzrujbCplYvzrGtmNb9Cm",
-			"avatarUrl": "https://semantic-ui.com/images/avatar2/small/mark.png",
-			"firstName": "Aditya",
-			"lastName": "Parker",
-			"isAdmin": false,
-			"createdAt": "2019-07-18T11:19:30.686Z",
-			"updatedAt": "2019-07-18T11:19:30.686Z"
+			"createdAt": "2019-08-05T19:49:37.668Z",
+			"updatedAt": "2019-08-05T19:49:37.668Z"
 		}
 	]
 }

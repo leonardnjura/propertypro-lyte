@@ -39,8 +39,7 @@ exports.fetchOneUser = (req, res) => {
 exports.addUser = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
+    return res.status(422).json({ errors: errors.array() });
   }
 
   const { firstName, lastName, email, password } = req.body;
@@ -100,8 +99,7 @@ exports.updateUser = (req, res) => {
   const id = parseInt(req.params.id, 10);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
+    return res.status(422).json({ errors: errors.array() });
   }
 
   const { firstName, lastName } = req.body;
@@ -116,6 +114,7 @@ exports.updateUser = (req, res) => {
        * update already? no wait..
        * only account owner (or admin) to finish this */
       const surfer = req.user.id;
+      const realOwner = user.id;
       let userMsg = '!Oops, you are not the account owner';
 
       if (surfer === id) {
@@ -138,7 +137,7 @@ exports.updateUser = (req, res) => {
           });
         } else {
           // decline otherwise, nobody else should save
-          return res.status(401).json({ msg: userMsg, surfer });
+          return res.status(401).json({ msg: userMsg, realOwner, surfer });
         }
       });
     })
@@ -149,8 +148,7 @@ exports.promoteUser = (req, res) => {
   const id = parseInt(req.params.id, 10);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    res.status(422).json({ errors: errors.array() });
-    return;
+    return res.status(422).json({ errors: errors.array() });
   }
 
   const { isAdmin } = req.body;
@@ -189,6 +187,7 @@ exports.deleteUser = (req, res) => {
        * delete already? no wait..
        * only account owner (or admin) to finish this */
       const surfer = req.user.id;
+      const realOwner = user.id;
       let userMsg = '!Oops, you are not the account owner';
 
       if (surfer === id) {
@@ -205,7 +204,9 @@ exports.deleteUser = (req, res) => {
             // admin may save
             return user
               .destroy()
-              .then(() => res.json({ success: true, msg: userMsg, surfer }));
+              .then(() =>
+                res.json({ success: true, msg: userMsg, realOwner, surfer })
+              );
           });
         } else {
           // decline otherwise, nobody else should save

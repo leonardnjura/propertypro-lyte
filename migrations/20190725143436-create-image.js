@@ -14,10 +14,13 @@ module.exports = {
           key: 'id'
         }
       },
-      imageName: {
+      imageCaption: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
+      },
+      imageUrl: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

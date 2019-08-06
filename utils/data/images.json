@@ -1,0 +1,60 @@
+{
+  "images": [
+    {
+      "imageCaption": "Living room",
+      "imageUrl": "http://pixbay.com/image5.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 5
+    },
+    {
+      "imageCaption": "Living room",
+      "imageUrl": "http://pixbay.com/image4.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 4
+    },
+    {
+      "imageCaption": "Living room",
+      "imageUrl": "http://pixbay.com/image3a.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 3
+    },
+    {
+      "imageCaption": "Back yard",
+      "imageUrl": "http://pixbay.com/image3b.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 3
+    },
+    {
+      "imageCaption": "Bedroom",
+      "imageUrl": "http://pixbay.com/image2a.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 2
+    },
+    {
+      "imageCaption": "Master Bathroom",
+      "imageUrl": "http://pixbay.com/image2b.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 2
+    },
+    {
+      "imageCaption": "Garage",
+      "imageUrl": "http://pixbay.com/image2c.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 2
+    },
+    {
+      "imageCaption": "Kitchen",
+      "imageUrl": "http://pixbay.com/image1.jpg",
+      "createdAt": "2019-08-18T11:19:30.686Z",
+      "updatedAt": "2019-08-18T11:19:30.686Z",
+      "propertyId": 1
+    }
+  ]
+}

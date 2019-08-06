@@ -21,7 +21,7 @@ describe('serverTests', () => {
   let twoRegularUserId = '';
   let oneSuperUserToken = '';
   const oneRegularUserData = {
-    email: 'esther@localhost.com',
+    email: 'mona@localhost.com',
     password: '0000'
   };
   const twoRegularUserData = {
@@ -42,8 +42,8 @@ describe('serverTests', () => {
   const twoRegularUserBadEditData = { email: 'b@tmanandrobin.com', id: 6 };
   const twoRegularUserPromoteData = { isAdmin: true };
 
-  const missingUser = 999;
-  const badInt = 'e999000000000';
+  const missingUser = 9999;
+  const badInt = 'e9999000000000';
 
   before(done => {
     console.log('\n**BEFORE');
@@ -55,14 +55,41 @@ describe('serverTests', () => {
         if (err) {
           return done(err);
         }
-        console.log('LOGIN SUPERUSER', res.body);
+        console.log('LOGIN ONE SUPERUSER HOOK', res.body);
         oneSuperUserToken = res.body.token;
       });
+
+    request(app)
+      .post('/api/auth/signup')
+      .send(oneRegularUserData)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        console.log('REGISTER ONE REGULAR USER HOOK', res.body);
+        oneRegularUserId = res.body.user.id;
+        oneRegularUserToken = res.body.token;
+      });
+
     done();
   });
 
   after(done => {
     console.log('\nAFTER**');
+
+    // setTimeout(() => {
+    //   request(app)
+    //     .delete(`/api/auth/users/${oneRegularUserId}`)
+    //     .set('x-auth-token', oneSuperUserToken)
+    //     .end((err, res) => {
+    //       if (err) {
+    //         return done(err);
+    //       }
+    //       // console.log(res.body);
+    //       return done();
+    //     });
+    // }, 2500);
+
     setTimeout(() => {
       server.close();
       console.log('Server closing..');
@@ -71,36 +98,36 @@ describe('serverTests', () => {
   });
 
   beforeEach(done => {
-    console.log('\n*BEFORE EACH, CREATE DUMMY USER');
+    // console.log('\n*BEFORE EACH, CREATE DUMMY USER');
     // runs before each test in this block
     // create regular user
-    request(app)
-      .post('/api/auth/signup')
-      .send(oneRegularUserData)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        // console.log(res.body);
-        oneRegularUserId = res.body.user.id;
-        oneRegularUserToken = res.body.token;
-        return done();
-      });
+    // request(app)
+    //   .post('/api/auth/signup')
+    //   .send(oneRegularUserData)
+    //   .end((err, res) => {
+    //     if (err) {
+    //       return done(err);
+    //     }
+    //     console.log('SIGNUP', res.body);
+    //     oneRegularUserId = res.body.user.id;
+    //     oneRegularUserToken = res.body.token;
+    //   });
+    return done();
   });
 
   afterEach(done => {
-    console.log('\nAFTER EACH, DELETE DUMMY USER*');
+    // console.log('\nAFTER EACH, DELETE DUMMY USER*');
     // runs after each test in this block
-    request(app)
-      .delete(`/api/auth/users/${oneRegularUserId}`)
-      .set('x-auth-token', oneRegularUserToken)
-      .end((err, res) => {
-        if (err) {
-          return done(err);
-        }
-        // console.log(res.body);
-        return done();
-      });
+    // request(app)
+    //   .delete(`/api/auth/users/${oneRegularUserId}`)
+    //   .set('x-auth-token', oneSuperUserToken)
+    //   .end((err, res) => {
+    //     if (err) {
+    //       return done(err);
+    //     }
+    //     // console.log(res.body);
+    //   });
+    return done();
   });
 
   // test cases
@@ -216,6 +243,20 @@ describe('serverTests', () => {
         });
     });
 
+    it('GET should catch db errors', done => {
+      request(app)
+        .get(`/api/auth/users/${badInt}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          // console.log(res.body);
+          assert.equal(res.body.error.name, 'SequelizeDatabaseError');
+          assert.equal(res.status, 400);
+          return done();
+        });
+    });
+
     it('POST should register a user', done => {
       request(app)
         .post('/api/auth/signup')
@@ -224,7 +265,7 @@ describe('serverTests', () => {
           if (err) {
             return done(err);
           }
-          // console.log(res.body);
+          console.log('REGISTER TWO REGULAR USER', res.body);
           twoRegularUserId = res.body.user.id;
           twoRegularUserToken = res.body.token;
           assert.property(res.body, 'token');
@@ -630,39 +671,43 @@ describe('serverTests', () => {
     });
 
     it('DELETE should delete user with correct headers', done => {
-      request(app)
-        .delete(`/api/auth/users/${twoRegularUserId}`)
-        .set('x-auth-token', twoRegularUserToken)
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          // console.log(res.body);
-          assert.include(
-            res.body.msg,
-            `Account owner deleted account with ID: ${twoRegularUserId}`
-          );
-          assert.equal(res.status, 200);
-          return done();
-        });
+      setTimeout(() => {
+        request(app)
+          .delete(`/api/auth/users/${twoRegularUserId}`)
+          .set('x-auth-token', twoRegularUserToken)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            console.log('DELETE TWO USER', res.body);
+            assert.include(
+              res.body.msg,
+              `Account owner deleted account with ID: ${twoRegularUserId}`
+            );
+            assert.equal(res.status, 200);
+          });
+      }, 2000);
+      return done();
     });
 
     it('DELETE admin may delete user', done => {
-      request(app)
-        .delete(`/api/auth/users/${oneRegularUserId}`)
-        .set('x-auth-token', oneSuperUserToken)
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          // console.log(res.body);
-          assert.include(
-            res.body.msg,
-            `Admin deleted account with ID: ${oneRegularUserId}`
-          );
-          assert.equal(res.status, 200);
-          return done();
-        });
+      setTimeout(() => {
+        request(app)
+          .delete(`/api/auth/users/${oneRegularUserId}`)
+          .set('x-auth-token', oneSuperUserToken)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            console.log('DELETE ONE USER', res.body);
+            assert.include(
+              res.body.msg,
+              `Admin deleted account with ID: ${oneRegularUserId}`
+            );
+            assert.equal(res.status, 200);
+          });
+      }, 2000);
+      return done();
     });
 
     it('DELETE shall not expunge missing user', done => {
