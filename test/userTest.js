@@ -77,19 +77,6 @@ describe('serverTests', () => {
   after(done => {
     console.log('\nAFTER**');
 
-    // setTimeout(() => {
-    //   request(app)
-    //     .delete(`/api/auth/users/${oneRegularUserId}`)
-    //     .set('x-auth-token', oneSuperUserToken)
-    //     .end((err, res) => {
-    //       if (err) {
-    //         return done(err);
-    //       }
-    //       // console.log(res.body);
-    //       return done();
-    //     });
-    // }, 2500);
-
     setTimeout(() => {
       server.close();
       console.log('Server closing..');
@@ -98,35 +85,10 @@ describe('serverTests', () => {
   });
 
   beforeEach(done => {
-    // console.log('\n*BEFORE EACH, CREATE DUMMY USER');
-    // runs before each test in this block
-    // create regular user
-    // request(app)
-    //   .post('/api/auth/signup')
-    //   .send(oneRegularUserData)
-    //   .end((err, res) => {
-    //     if (err) {
-    //       return done(err);
-    //     }
-    //     console.log('SIGNUP', res.body);
-    //     oneRegularUserId = res.body.user.id;
-    //     oneRegularUserToken = res.body.token;
-    //   });
     return done();
   });
 
   afterEach(done => {
-    // console.log('\nAFTER EACH, DELETE DUMMY USER*');
-    // runs after each test in this block
-    // request(app)
-    //   .delete(`/api/auth/users/${oneRegularUserId}`)
-    //   .set('x-auth-token', oneSuperUserToken)
-    //   .end((err, res) => {
-    //     if (err) {
-    //       return done(err);
-    //     }
-    //     // console.log(res.body);
-    //   });
     return done();
   });
 
@@ -143,8 +105,12 @@ describe('serverTests', () => {
           }
           // console.log(res.body)
           assert.equal(res.status, 200);
-          assert.equal(res.body.msg, 'welcome to propertypro lyte');
           assert.typeOf(res.body, 'object');
+          assert.equal(res.body.msg, 'welcome to propertypro lyte');
+          assert.typeOf(res.body.saa, 'string');
+          assert.typeOf(res.body.quote, 'string');
+          assert.typeOf(res.body.karibu, 'string');
+          assert.include(res.body.saa, ':');
           assert.property(res.body, 'msg');
           assert.lengthOf(res.body.msg, 27);
           return done();
