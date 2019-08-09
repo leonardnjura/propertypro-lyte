@@ -21,9 +21,13 @@ const isProductionMode = NODE_ENV === 'production';
 
 // greetings
 const today = moment()
+  .local()
   .format('dddd')
   .toLowerCase();
-const now = moment().format('Do MMMM, YYYY hh:mma');
+const now = moment()
+  .local()
+  .format('Do MMMM, YYYY hh:mma')
+  .toLowerCase();
 
 const quote = isDevMode
   ? config.get('TAFAKARI_LA_BABU').toLowerCase()

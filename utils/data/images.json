@@ -2,56 +2,63 @@
   "images": [
     {
       "imageCaption": "Living room",
-      "imageUrl": "http://pixbay.com/image5.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2016/07/30/23/01/living-room-1558191__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 5
     },
     {
       "imageCaption": "Living room",
-      "imageUrl": "http://pixbay.com/image4.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/09/09/18/25/living-room-2732939__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 4
     },
     {
       "imageCaption": "Living room",
-      "imageUrl": "http://pixbay.com/image3a.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2016/11/18/17/20/couch-1835923__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 3
     },
     {
       "imageCaption": "Back yard",
-      "imageUrl": "http://pixbay.com/image3b.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2015/11/15/19/48/girl-1044714__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 3
     },
     {
+      "imageCaption": "Living room",
+      "imageUrl": "https://cdn.pixabay.com/photo/2016/06/05/22/13/home-1438305__340.jpg",
+      "createdAt": "2019-08-11T11:19:30.686Z",
+      "updatedAt": "2019-08-11T11:19:30.686Z",
+      "propertyId": 3
+    },
+    {
       "imageCaption": "Bedroom",
-      "imageUrl": "http://pixbay.com/image2a.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2012/12/19/18/13/ancient-70996__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 2
     },
     {
       "imageCaption": "Master Bathroom",
-      "imageUrl": "http://pixbay.com/image2b.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/01/15/16/23/bathroom-1982011__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 2
     },
     {
       "imageCaption": "Garage",
-      "imageUrl": "http://pixbay.com/image2c.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2014/07/31/23/37/motorbike-407186__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 2
     },
     {
       "imageCaption": "Kitchen",
-      "imageUrl": "http://pixbay.com/image1.jpg",
+      "imageUrl": "https://cdn.pixabay.com/photo/2016/04/18/08/50/kitchen-1336160__340.jpg",
       "createdAt": "2019-08-18T11:19:30.686Z",
       "updatedAt": "2019-08-18T11:19:30.686Z",
       "propertyId": 1

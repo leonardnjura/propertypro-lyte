@@ -23,6 +23,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       }
     },
+    {
+      classMethods: {
+        associate(models) {
+          Flag.belongsTo(models.Property, {
+            foreignKey: 'propertyId',
+            onDelete: 'CASCADE'
+          });
+        }
+      }
+    },
     {}
   );
   Flag.associate = function(models) {

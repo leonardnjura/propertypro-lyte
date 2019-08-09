@@ -178,6 +178,60 @@ describe('serverTests', () => {
         });
     });
 
+    it('GET should return count and pagination details', done => {
+      request(app)
+        .get('/api/auth/users/?pageNo=1&pageSize=10&include=0&orderBy=id')
+        .expect('Content-type', /json/)
+        .expect(200) // http status
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 200);
+          assert.property(res.body, 'users');
+          assert.property(res.body, 'count');
+          assert.property(res.body, 'countPerPage');
+          assert.property(res.body, 'totalPages');
+          assert.property(res.body, 'nextPageLink');
+          assert.typeOf(res.body.count, 'number');
+          assert.typeOf(res.body.countPerPage, 'number');
+          assert.typeOf(res.body.totalPages, 'number');
+          assert.include(res.body.nextPageLink, 'http');
+          return done();
+        });
+    });
+
+    it('GET should return pageCount warning', done => {
+      request(app)
+        .get('/api/auth/users/?pageNo=0&pageSize=10&include=0&orderBy=id')
+        .expect('Content-type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 400);
+          assert.include(res.body.msg, 'Invalid page number');
+          return done();
+        });
+    });
+
+    it('GET should return pageSize warning', done => {
+      request(app)
+        .get('/api/auth/users/?pageNo=1&pageSize=0&include=0&orderBy=id')
+        .expect('Content-type', /json/)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          console.log(res.body);
+          assert.equal(res.status, 400);
+          assert.include(res.body.msg, 'Invalid page size');
+          return done();
+        });
+    });
+
     it('GET should return page not found on non-existent user', done => {
       request(app)
         .get(`/api/auth/users/${missingUser}`)
@@ -284,6 +338,8 @@ describe('serverTests', () => {
           }
           // console.log(res.body)
           assert.property(res.body, 'token');
+          assert.property(res.body, 'time');
+          assert.property(res.body, 'user');
           return done();
         });
     });

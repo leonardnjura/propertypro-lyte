@@ -33,6 +33,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING
       }
     },
+    {
+      classMethods: {
+        associate(models) {
+          Property.hasMany(models.Images, {
+            foreignKey: 'propertyId',
+            onDelete: 'CASCADE',
+            as: 'duck'
+          });
+          Property.hasMany(models.Flags, {
+            foreignKey: 'propertyId',
+            onDelete: 'CASCADE',
+            as: 'goose'
+          });
+          Property.belongsTo(models.User, {
+            foreignKey: 'owner',
+            onDelete: 'CASCADE'
+          });
+        }
+      }
+    },
     {}
   );
   Property.associate = function(models) {

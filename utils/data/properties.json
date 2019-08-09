@@ -6,7 +6,7 @@
       "city": "Nairobi",
       "address": "Waiyaki Way",
       "type": "5-bedroom bungalow",
-      "imageUrl": "https://www-bar.masterclass.com/images/2779/pin.jpg?1556235538",
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/04/10/22/28/residence-2219972__340.jpg",
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z",
       "owner": 5
@@ -17,7 +17,7 @@
       "city": "Mombasa",
       "address": "Sultan Rd",
       "type": "4-bedroom boma",
-      "imageUrl": "https://www-bar.masterclass.com/images/2779/joho.jpg?1556235538",
+      "imageUrl": "https://cdn.pixabay.com/photo/2015/11/07/11/54/barn-1031613__340.jpg",
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z",
       "owner": 4
@@ -28,7 +28,7 @@
       "city": "Nairobi",
       "address": "Westlands Rd",
       "type": "4-bedroom maisonette",
-      "imageUrl": "https://www-bar.masterclass.com/images/2779/westy.jpg?1556235538",
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/07/08/02/16/house-2483336__340.jpg",
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z",
       "owner": 3
@@ -39,7 +39,7 @@
       "city": "Nairobi",
       "address": "Kileleshwa Rd",
       "type": "4-bedroom manyatta",
-      "imageUrl": "https://www-bar.masterclass.com/images/2779/kilewe.jpg?1556235538",
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/07/03/21/45/house-2469110__340.jpg",
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z",
       "owner": 2
@@ -50,7 +50,7 @@
       "city": "Homabay",
       "address": "Homabay Rd",
       "type": "6-bedroom flat",
-      "imageUrl": "https://www-bar.masterclass.com/images/2779/hpomena.jpg?1556235538",
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/06/16/15/58/luxury-home-2409518__340.jpg",
       "createdAt": "2019-07-18T11:19:30.686Z",
       "updatedAt": "2019-07-18T11:19:30.686Z",
       "owner": 3

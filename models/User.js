@@ -27,6 +27,17 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false
       }
     },
+    {
+      classMethods: {
+        associate(models) {
+          User.hasMany(models.Property, {
+            foreignKey: 'UserId',
+            onDelete: 'CASCADE',
+            as: 'cat'
+          });
+        }
+      }
+    },
     {}
   );
   User.associate = function(models) {
