@@ -8,17 +8,17 @@ const { Op } = Sequelize;
 /**
  * REST */
 exports.fetchAllImages = (req, res) => {
-  Image.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
-    .then(images => res.status(200).json({ images }))
-    .catch(err => console.log(err));
+  Image.findAll({ limit: 100, order: [['updatedAt', 'DESC']] }).then(images =>
+    res.status(200).json({ images })
+  );
 };
 
 exports.searchAllImages = (req, res) => {
   let { term } = req.query;
   term = term.toLowerCase();
-  Image.findAll({ where: { imageCaption: { [Op.like]: `%${term}%` } } })
-    .then(results => res.json({ results }))
-    .catch(err => console.log(err));
+  Image.findAll({ where: { imageCaption: { [Op.like]: `%${term}%` } } }).then(
+    results => res.json({ results })
+  );
 };
 
 exports.fetchOneImage = (req, res) => {

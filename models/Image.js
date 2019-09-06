@@ -24,6 +24,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       }
     },
+    {
+      classMethods: {
+        associate(models) {
+          Image.belongsTo(models.Property, {
+            foreignKey: 'propertyId',
+            onDelete: 'CASCADE'
+          });
+        }
+      }
+    },
     {}
   );
   Image.associate = function(models) {

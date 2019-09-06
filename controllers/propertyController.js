@@ -4,14 +4,13 @@ const Sequelize = require('sequelize');
 const { User, Property, Image, Flag } = require('../models/index');
 
 const { Op } = Sequelize;
+Property.belongsTo(User, { foreignKey: 'owner' });
+Property.hasMany(Image, { foreignKey: 'propertyId' });
+Property.hasMany(Flag, { foreignKey: 'propertyId' });
 
 /**
  * REST */
 exports.fetchAllProperties = (req, res) => {
-  Property.belongsTo(User, { foreignKey: 'owner' });
-  Property.hasMany(Image, { foreignKey: 'propertyId' });
-  Property.hasMany(Flag, { foreignKey: 'propertyId' });
-
   const queRRi = {};
   let pageNo = 1;
   let pageSize = 10;
@@ -19,7 +18,15 @@ exports.fetchAllProperties = (req, res) => {
   let totalPages = null;
   queRRi.include = [User, Image, Flag];
   queRRi.order = [['updatedAt', 'DESC']];
-  const cols = ['id', 'updatedAt', 'price', 'type', 'city', 'state'];
+  const cols = [
+    'id',
+    'updatedAt',
+    'createdAt',
+    'price',
+    'type',
+    'city',
+    'state'
+  ];
 
   if (req.query.include) {
     const include = parseInt(req.query.include, 10);
@@ -64,41 +71,37 @@ exports.fetchAllProperties = (req, res) => {
     })
     .catch(err => console.log(err));
 
-  Property.findAll(queRRi)
-    .then(properties => {
-      const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-      const nextPage = pageNo + 1;
-      let nextPageLink = `${fullUrl
-        .split('?')
-        .shift()}?pageNo=${nextPage}&pageSize=${pageSize}`;
-      if (nextPage > totalPages) {
-        nextPageLink = null;
-      }
-      return res.status(200).json({
-        properties,
-        count: totalCount,
-        countPerPage: pageSize,
-        totalPages,
-        nextPageLink
-      });
-    })
-    .catch(err => console.log(err));
+  Property.findAll(queRRi).then(properties => {
+    const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const nextPage = pageNo + 1;
+    let nextPageLink = `${fullUrl
+      .split('?')
+      .shift()}?pageNo=${nextPage}&pageSize=${pageSize}`;
+    if (nextPage > totalPages) {
+      nextPageLink = null;
+    }
+    return res.status(200).json({
+      properties,
+      count: totalCount,
+      countPerPage: pageSize,
+      totalPages,
+      nextPageLink
+    });
+  });
 };
 
 exports.searchAllProperties = (req, res) => {
   let { term } = req.query;
   term = term.toLowerCase();
-  Property.findAll({ where: { type: { [Op.like]: `%${term}%` } } })
-    .then(results => res.json({ results }))
-    .catch(err => console.log(err));
+  Property.findAll({ where: { type: { [Op.like]: `%${term}%` } } }).then(
+    results => res.json({ results })
+  );
 };
 
 exports.fetchOneProperty = (req, res) => {
-  Property.belongsTo(User, { foreignKey: 'owner' });
-  Property.hasMany(Image, { foreignKey: 'propertyId' });
-  Property.hasMany(Flag, { foreignKey: 'propertyId' });
+  const id = parseInt(req.params.id, 10);
   Property.findOne({
-    where: { id: req.params.id },
+    where: { id },
     include: [User, Image, Flag]
   })
     .then(property => {

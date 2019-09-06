@@ -1,17 +1,94 @@
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
+const moment = require('moment');
 
 const Sequelize = require('sequelize');
 const { generateToken } = require('../middleware/auth');
-const { User } = require('../models/index');
+const { User, Property } = require('../models/index');
 
 const { Op } = Sequelize;
+User.hasMany(Property, { foreignKey: 'owner' });
 
 /**
  * REST */
 exports.fetchAllUsers = (req, res) => {
-  User.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
-    .then(users => res.status(200).json({ users }))
+  const queRRi = {};
+  let pageNo = 1;
+  let pageSize = 10;
+  let totalCount = null;
+  let totalPages = null;
+  queRRi.include = [Property];
+  queRRi.order = [['updatedAt', 'DESC']];
+  const cols = [
+    'id',
+    'updatedAt',
+    'createdAt',
+    'email',
+    'firstName',
+    'lastName'
+  ];
+
+  if (req.query.include) {
+    const include = parseInt(req.query.include, 10);
+    if (include === 0) queRRi.include = [];
+  }
+
+  if (req.query.orderBy) {
+    const { orderBy } = req.query;
+    if (cols.includes(orderBy)) {
+      queRRi.order = [[orderBy, 'ASC']];
+    }
+  }
+
+  if (req.query.pageNo) {
+    const userPageNo = parseInt(req.query.pageNo, 10);
+    if (userPageNo < 0 || userPageNo === 0)
+      return res
+        .status(400)
+        .json({ msg: '!Invalid page number, should start with 1' });
+    pageNo = userPageNo;
+  }
+
+  if (req.query.pageSize) {
+    const userPageSize = parseInt(req.query.pageSize, 10);
+    if (userPageSize < 0 || userPageSize === 0)
+      return res
+        .status(400)
+        .json({ msg: '!Invalid page size, should start with 1' });
+    pageSize = userPageSize;
+  }
+
+  if (pageNo) {
+    queRRi.offset = pageSize * (pageNo - 1);
+    queRRi.limit = pageSize;
+  }
+  queRRi.where = {};
+
+  User.count()
+    .then(count => {
+      totalCount = count;
+      totalPages = Math.ceil(totalCount / pageSize);
+    })
+    .catch(err => console.log(err));
+
+  User.findAll(queRRi)
+    .then(users => {
+      const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+      const nextPage = pageNo + 1;
+      let nextPageLink = `${fullUrl
+        .split('?')
+        .shift()}?pageNo=${nextPage}&pageSize=${pageSize}`;
+      if (nextPage > totalPages) {
+        nextPageLink = null;
+      }
+      res.status(200).json({
+        users,
+        count: totalCount,
+        countPerPage: pageSize,
+        totalPages,
+        nextPageLink
+      });
+    })
     .catch(err => console.log(err));
 };
 
@@ -25,7 +102,7 @@ exports.searchAllUsers = (req, res) => {
 
 exports.fetchOneUser = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  User.findOne({ where: { id } })
+  User.findOne({ where: { id }, include: [Property] })
     .then(user => {
       if (!user) {
         // user object is always there but object may be null
@@ -63,7 +140,15 @@ exports.addUser = (req, res) => {
           newUser.password = hash;
           newUser.save().then(user => {
             const token = generateToken(user);
-            res.status(201).json({ token, user });
+            // signup saa..
+            const today = moment()
+              .local()
+              .format('dddd');
+            const now = moment()
+              .local()
+              .format('Do MMMM, YYYY hh:mma');
+            const time = `${today} ${now};`;
+            res.status(201).json({ token, time, user });
           });
         });
       });
@@ -89,7 +174,11 @@ exports.loginUser = (req, res) => {
         if (!isMatch)
           return res.status(400).json({ msg: '!Invalid credentials' });
         const token = generateToken(user);
-        res.json({ token, user });
+        // login saa..
+        const today = moment().format('dddd');
+        const now = moment().format('Do MMMM, YYYY hh:mma');
+        const time = `${today} ${now};`;
+        res.json({ token, time, user });
       });
     })
     .catch(err => res.status(400).json({ success: false, error: err }));

@@ -8,17 +8,17 @@ const { Op } = Sequelize;
 /**
  * REST */
 exports.fetchAllFlags = (req, res) => {
-  Flag.findAll({ limit: 100, order: [['updatedAt', 'DESC']] })
-    .then(flags => res.status(200).json({ flags }))
-    .catch(err => console.log(err));
+  Flag.findAll({ limit: 100, order: [['updatedAt', 'DESC']] }).then(flags =>
+    res.status(200).json({ flags })
+  );
 };
 
 exports.searchAllFlags = (req, res) => {
   let { term } = req.query;
   term = term.toLowerCase();
-  Flag.findAll({ where: { description: { [Op.like]: `%${term}%` } } })
-    .then(results => res.json({ results }))
-    .catch(err => console.log(err));
+  Flag.findAll({ where: { description: { [Op.like]: `%${term}%` } } }).then(
+    results => res.json({ results })
+  );
 };
 
 exports.fetchOneFlag = (req, res) => {
